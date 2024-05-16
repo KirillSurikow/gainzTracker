@@ -1,0 +1,95 @@
+:host {
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+
+  mat-card {
+    width: 420px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    padding: 0 4px;
+    cursor: pointer;
+    position: relative;
+
+
+
+    &:hover {
+      background-color: rgb(211, 205, 205, 0.5);
+
+      .editIcon{
+        display: block !important;
+      }
+    }
+
+    .iconBtn{
+      border: none;
+      background-color: white;
+      width: fit-content;
+      height: fit-content;
+
+      mat-icon{
+        &:hover{
+          cursor: pointer;
+          transform: scale(1.1);
+        }
+      }
+
+    }
+
+    .cancelEditButton{
+      position: absolute;
+      right: 4px;
+      bottom: 30px;
+     width: fit-content;
+     height: fit-content;
+
+    }
+
+    .confirmEditIcon{
+       position: absolute;
+       right: 4px;
+       bottom: 4px;
+
+    }
+
+    &:first-child{
+      &:hover{
+        background-color: white;
+        cursor: not-allowed;
+      }
+    }
+
+    .property {
+      width: 150px;
+      color: green;
+    }
+
+    .editIcon{
+      position: absolute;
+      right: 0px;
+      display: none;
+    }
+
+    #btn{
+      display: flex;
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+      font-size: 22px;
+    }
+  }
+}
+
+.hidden{
+  opacity: 0 !important;
+  &:hover{
+    opacity: 0 !important;
+  }
+}
+
+.d-none{
+  display: none;
+}

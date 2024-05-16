@@ -1,0 +1,85 @@
+<mat-card><span class="property">User-ID</span><span>{{ user?.uid }}</span></mat-card>
+
+<mat-card (click)="toggleEdit($event, 'userNameInputToggled' )" appPreventHover [appToggle]="userNameInputToggled">
+  <span class="property">Username </span>
+  <span [ngClass]="{'d-none' : userNameInputToggled }">{{ user?.username }}</span>
+  <div [ngClass]="{'d-none' : !userNameInputToggled }">
+    <mat-form-field (click)="$event.stopPropagation()">
+      <input  matInput type="text" #usernameInput="ngModel" minlength="5" required [ngModel]="user?.username">
+    </mat-form-field>
+    <mat-error *ngIf="usernameInput.invalid && (usernameInput.touched || usernameInput.dirty)">
+      <span *ngIf="usernameInput.errors?.['minlength']">Mindestens fünf Zeichen</span>
+      <span *ngIf="usernameInput.errors?.['required']">Fehlender Wert</span>
+    </mat-error>
+  </div>
+  <mat-icon [ngClass]="{'hidden' : userNameInputToggled}" class="editIcon" id="editIcon1" style="display: none">edit</mat-icon>
+<button (click)="update('username', usernameInput)" [ngClass]="{'d-none' : !userNameInputToggled}" class="confirmEditIcon iconBtn" >
+    <mat-icon>check</mat-icon>
+  </button>
+</mat-card>
+
+<mat-card (click)="toggleEdit($event, 'firstNameInputToggled' )" appPreventHover [appToggle]="firstNameInputToggled">
+  <span class="property">Vorname </span>
+  <span [ngClass]="{'d-none' : firstNameInputToggled }">{{ user?.firstName }}</span>
+  <div [ngClass]="{'d-none' : !firstNameInputToggled }">
+    <mat-form-field (click)="$event.stopPropagation()">
+      <input  matInput type="text" #firstNameInput="ngModel" minlength="3" required [ngModel]="user?.firstName">
+    </mat-form-field>
+    <mat-error *ngIf="firstNameInput.invalid && (firstNameInput.touched || firstNameInput.dirty)">
+      <span *ngIf="firstNameInput.errors?.['minlength']">Mindestens drei Zeichen</span>
+      <span *ngIf="firstNameInput.errors?.['required']">Fehlender Wert</span>
+    </mat-error>
+  </div>
+  <mat-icon [ngClass]="{'hidden' : firstNameInputToggled}" class="editIcon" id="editIcon2" style="display: none">edit</mat-icon>
+<button (click)="update('firstName', firstNameInput)" [ngClass]="{'d-none' : !firstNameInputToggled}" class="confirmEditIcon iconBtn" >
+    <mat-icon>check</mat-icon>
+  </button>
+</mat-card>
+
+<mat-card (click)="toggleEdit($event, 'lastNameInputToggled' )" appPreventHover [appToggle]="lastNameInputToggled">
+  <span class="property">Nachname </span>
+  <span [ngClass]="{'d-none' : lastNameInputToggled }">{{ user?.lastName }}</span>
+  <div [ngClass]="{'d-none' : !lastNameInputToggled }">
+    <mat-form-field (click)="$event.stopPropagation()">
+      <input  matInput type="text" #lastNameInput="ngModel" minlength="3" required [ngModel]="user?.lastName">
+    </mat-form-field>
+    <mat-error *ngIf="lastNameInput.invalid && (lastNameInput.touched || lastNameInput.dirty)">
+      <span *ngIf="lastNameInput.errors?.['minlength']">Mindestens drei Zeichen</span>
+      <span *ngIf="lastNameInput.errors?.['required']">Fehlender Wert</span>
+    </mat-error>
+  </div>
+  <mat-icon [ngClass]="{'hidden' : lastNameInputToggled}" class="editIcon" id="editIcon3" style="display: none">edit</mat-icon>
+<button (click)="update('lastName', lastNameInput)" [ngClass]="{'d-none' : !lastNameInputToggled}" class="confirmEditIcon iconBtn" >
+    <mat-icon>check</mat-icon>
+  </button>
+</mat-card>
+
+<mat-card (click)="toggleEdit($event, 'emailInputToggled' )" appPreventHover [appToggle]="emailInputToggled">
+  <span class="property">E-Mail </span>
+  <span [ngClass]="{'d-none' : emailInputToggled }">{{ user?.email }}</span>
+  <div [ngClass]="{'d-none' : !emailInputToggled }">
+    <mat-form-field (click)="$event.stopPropagation()">
+      <input  matInput type="text" #emailInput="ngModel" pattern="[A-Za-z0-9._%\-]+@[A-Za-z0-9._%\-]+\.[a-z]{2,3}"  required [ngModel]="user?.email">
+    </mat-form-field>
+    <mat-error *ngIf="emailInput.invalid && (emailInput.touched || emailInput.dirty)">
+      <span *ngIf="emailInput.errors?.['pattern']">Kein E-Mail-Format</span>
+      <span *ngIf="emailInput.errors?.['required']">Fehlender Wert</span>
+    </mat-error>
+  </div>
+  <mat-icon [ngClass]="{'hidden' : emailInputToggled}" class="editIcon" id="editIcon3" style="display: none">edit</mat-icon>
+<button (click)="update('email', emailInput)" [ngClass]="{'d-none' : !emailInputToggled}" class="confirmEditIcon iconBtn" >
+    <mat-icon>check</mat-icon>
+  </button>
+</mat-card>
+
+<mat-card>
+  <button (click)="goToChangePassword($event)" id="btn" mat-icon-button color="warn">
+    Passwort ändern
+  </button>
+  </mat-card>
+
+  <mat-card>
+    <button (click)="goToDeleteUser($event)" id="btn" mat-icon-button color="warn">
+      Benutzer löschen
+    </button>
+    </mat-card>
