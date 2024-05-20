@@ -93,19 +93,44 @@
   }
 
   .findExerciseCard {
-    position: relative;
-    button {
-      position: absolute;
-      width: fit-content;
-      height: fit-content;
-      background-color: white;
-      border: none;
-      right: 4px;
-      top: 4px;
-      cursor: pointer;
+    mat-card-title {
+      position: relative;
+      button {
+        position: absolute;
+        width: fit-content;
+        height: fit-content;
+        background-color: white;
+        border: none;
+        right: 4px;
+        top: 4px;
+        cursor: pointer;
 
-      &:hover {
-        transform: scale(1.1);
+        &:hover {
+          transform: scale(1.1);
+        }
+      }
+    }
+
+    mat-card-content {
+      form {
+        width: 100%;
+        display: flex;
+        gap: 4px;
+        flex-wrap: wrap;
+        justify-content: center;
+
+        .searchExerciseName{
+          width: 100%;
+        }
+
+        mat-form-field {
+          min-width: 220px;
+          width: max-content;
+        }
+
+        button {
+          width: 100%;
+        }
       }
     }
   }
@@ -129,7 +154,7 @@
       }
     }
     mat-card-content {
-      .searchBar{
+      .searchBar {
         width: 100%;
       }
 
@@ -259,14 +284,13 @@
             }
           }
 
-          .positonDelBtn{
+          .positonDelBtn {
             display: flex;
             width: 100%;
             justify-content: flex-end;
           }
         }
       }
-
     }
   }
 }

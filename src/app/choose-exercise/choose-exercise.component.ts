@@ -8,14 +8,9 @@ import { DataService } from '../services/dataservice/data.service';
 import { cardAnimations } from '../animations/cardanimations';
 import {
   MatDialog,
-  MAT_DIALOG_DATA,
-  MatDialogRef,
-  MatDialogTitle,
-  MatDialogContent,
-  MatDialogActions,
-  MatDialogClose,
 } from '@angular/material/dialog';
 import { DeleteExerciseComponent } from '../dialogs/deleteExercise/delete-exercise/delete-exercise.component';
+import { FetchService } from '../services/fetchService/fetch.service';
 
 @Component({
   selector: 'app-choose-exercise',
@@ -45,6 +40,9 @@ export class ChooseExerciseComponent {
   isBlurr: boolean = false;
   activateBlurr: boolean = false;
   searchExpression: string | undefined;
+  searchExerciseName : string | undefined;
+  searchExerciseCategory : string | undefined;
+  searchExerciseMuscles : string | undefined;
 
   categorys: Category[] = [
     { value: '', viewValue: '' },
@@ -61,7 +59,8 @@ export class ChooseExerciseComponent {
   constructor(
     private db: DbService,
     private dataService: DataService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private fetch : FetchService
   ) {
     this.trackingOptions = new TrackingOptions();
     this.targetedMuscles = new TargetedMuscles();
@@ -246,6 +245,15 @@ export class ChooseExerciseComponent {
       return false;
     } else {
       return false;
+    }
+  }
+
+  async onRequest(){
+    try {
+      const result = await this.fetch.fetchExercises(this.searchExerciseName, this.searchExerciseMuscles, this.searchExerciseCategory);
+     console.log(result)
+    } catch (error) {
+      console.log(error)
     }
   }
 }
