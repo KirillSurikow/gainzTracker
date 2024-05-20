@@ -1,0 +1,187 @@
+<mat-card *ngIf="!customize && !library && !manage">
+  <mat-card-title>Erstelle deine Übungen </mat-card-title>
+  <mat-card-subtitle>Erkunde die Bibliothek und lass dich inspirieren, oder erstelle dir deine eigenen Übungen</mat-card-subtitle>
+</mat-card>
+<div *ngIf="!customize && !library && !manage" class="options">
+  <mat-card (click)="openCard('library')">
+    Bibliothek
+  </mat-card>
+  <mat-card (click)="openCard('customize')">
+    Eigene Übung erstellen
+  </mat-card>
+  <mat-card (click)="openCard('manage')">
+    Übungen verwalten
+  </mat-card>
+</div>
+<mat-card *ngIf="customize" class="createExerciseCard">
+  <mat-card-title>Übung erstellen <button (click)="closeCustom()"><mat-icon>cancel</mat-icon></button></mat-card-title>
+  <mat-card-content>
+    <form (ngSubmit)="onSubmit()" #exerciseForm="ngForm">
+
+      <mat-form-field>
+        <mat-label>Name der Übung</mat-label>
+        <input id="exerciseName" required type="text" name="exerciseName"  minlength="3" pattern="^[a-zA-Z0-9\s-]*$" #exerciseNameInput="ngModel" [(ngModel)]="exerciseName" matInput />
+      </mat-form-field>
+      <mat-error *ngIf="exerciseNameInput.invalid && (exerciseNameInput.touched || exerciseNameInput.dirty)">
+        <span *ngIf="exerciseNameInput.errors?.['pattern']">Unerlaubte Zeichen</span>
+        <span *ngIf="exerciseNameInput.errors?.['minlength']">Mindestens drei Zeichen</span>
+        <span *ngIf="exerciseNameInput.errors?.['required']">Fehlender Wert</span>
+      </mat-error>
+
+      <h3>Welche Muskeln sollen beansprucht werden?</h3>
+
+
+      <div class="tMusclesContainer">
+        <mat-checkbox (change)="setUpMuscleValidation()" color="primary" name="abdominals" [(ngModel)]="targetedMuscles.abdominals" value="abdominals">Bauchmuskeln</mat-checkbox>
+        <mat-checkbox (change)="setUpMuscleValidation()" color="primary" name="abductors" [(ngModel)]="targetedMuscles.abductors" value="abductors">Abduktoren</mat-checkbox>
+        <mat-checkbox (change)="setUpMuscleValidation()" color="primary" name="adductors" [(ngModel)]="targetedMuscles.adductors" value="adductors">Adduktoren</mat-checkbox>
+        <mat-checkbox (change)="setUpMuscleValidation()" color="primary" name="biceps" [(ngModel)]="targetedMuscles.biceps" value="biceps">Bizeps</mat-checkbox>
+        <mat-checkbox (change)="setUpMuscleValidation()" color="primary" name="calves" [(ngModel)]="targetedMuscles.calves" value="calves">Wadenmuskeln</mat-checkbox>
+        <mat-checkbox (change)="setUpMuscleValidation()" color="primary" name="chest" [(ngModel)]="targetedMuscles.chest" value="chest">Brustmuskeln</mat-checkbox>
+        <mat-checkbox (change)="setUpMuscleValidation()" color="primary" name="forearms" [(ngModel)]="targetedMuscles.forearms" value="forearms">Unterarme</mat-checkbox>
+        <mat-checkbox (change)="setUpMuscleValidation()" color="primary" name="glutes" [(ngModel)]="targetedMuscles.glutes" value="glutes">Gesäßmuskeln</mat-checkbox>
+        <mat-checkbox (change)="setUpMuscleValidation()" color="primary" name="hamstrings" [(ngModel)]="targetedMuscles.hamstrings" value="hamstrings">Oberschenkelrückseite</mat-checkbox>
+        <mat-checkbox (change)="setUpMuscleValidation()" color="primary" name="lats" [(ngModel)]="targetedMuscles.lats" value="lats">Latissimus </mat-checkbox>
+        <mat-checkbox (change)="setUpMuscleValidation()" color="primary" name="lower_back" [(ngModel)]="targetedMuscles.lower_back" value="lower_back">unterer Rücken</mat-checkbox>
+        <mat-checkbox (change)="setUpMuscleValidation()" color="primary" name="middle_back" [(ngModel)]="targetedMuscles.middle_back" value="middle_back">mittlerer Rücken</mat-checkbox>
+        <mat-checkbox (change)="setUpMuscleValidation()" color="primary" name="neck" [(ngModel)]="targetedMuscles.neck" value="neck">Nackenmuskeln</mat-checkbox>
+        <mat-checkbox (change)="setUpMuscleValidation()" color="primary" name="quadriceps" [(ngModel)]="targetedMuscles.quadriceps" value="quadriceps">Quadrizeps </mat-checkbox>
+        <mat-checkbox (change)="setUpMuscleValidation()" color="primary" name="traps" [(ngModel)]="targetedMuscles.traps" value="traps">Trapezmuskel </mat-checkbox>
+        <mat-checkbox (change)="setUpMuscleValidation()" color="primary" name="triceps" [(ngModel)]="targetedMuscles.triceps" value="triceps">Trizeps</mat-checkbox>
+
+      </div>
+
+
+
+      <mat-form-field>
+        <mat-label>Kategorie (optional)</mat-label>
+        <select (change)="checkCategory()" matNativeControl id="exerciseCategory" name="exerciseCategory" #exerciseCategoryInput="ngModel" [(ngModel)]="exerciseCategory">
+        @for (category of categorys; track category){
+          <option [value]="category.value">{{category.viewValue}}</option>
+        }
+        </select>
+      </mat-form-field>
+      <mat-error *ngIf="exerciseCategoryCustomInput.invalid && (exerciseCategoryCustomInput.touched || exerciseCategoryCustomInput.dirty)">
+        <span *ngIf="exerciseCategoryCustomInput.errors?.['pattern']">Unerlaubte Zeichen</span>
+        <span *ngIf="categoryInvalid">Nur eine von den beiden Kategorie-Feldern befüllen</span>
+      </mat-error>
+
+      <mat-form-field>
+        <mat-label>Eigene Kategorie erstellen (optional)</mat-label>
+        <input (change)="checkCategory()"  id="exerciseCategoryCustom"  type="text" name="exerciseCategoryCustom" pattern="^[a-zA-Z0-9\s-]*$"  placehoder="z.B. Kraftausdauer" #exerciseCategoryCustomInput="ngModel" [(ngModel)]="exerciseCategoryCustom" matInput />
+      </mat-form-field>
+
+
+      <mat-form-field>
+        <mat-label>Beschreibung</mat-label>
+        <textarea id="exerciseDescribtion"  type="text" name="exerciseDescribtion" pattern="^[a-zA-Z0-9\s-]*$"  #exerciseDescribtionInput="ngModel" [(ngModel)]="exerciseDescribtion" matInput ></textarea>
+      </mat-form-field>
+      <mat-error *ngIf="exerciseDescribtionInput.invalid && (exerciseDescribtionInput.touched || exerciseDescribtionInput.dirty)">
+        <span *ngIf="exerciseDescribtionInput.errors?.['pattern']">Unerlaubte Zeichen</span>
+      </mat-error>
+
+      <mat-slide-toggle name="trackProgress" color="primary" [(ngModel)]="trackProgress">Fortschritt messen</mat-slide-toggle>
+      <br>
+
+      <div *ngIf="trackProgress">
+        <h3 >Wie soll der Fortschritt gemessen werden?</h3>
+
+        <mat-checkbox color="primary" (change)="setUpTrackingValidation()" name="weight" [(ngModel)]="trackingOptions.weight">Gewicht</mat-checkbox>
+        <mat-checkbox color="primary" (change)="setUpTrackingValidation()"name="repetitions" [(ngModel)]="trackingOptions.repetitions">Wiederholungen</mat-checkbox>
+        <mat-checkbox color="primary" (change)="setUpTrackingValidation()" name="time" [(ngModel)]="trackingOptions.time">Zeit</mat-checkbox>
+        <mat-checkbox color="primary" (change)="setUpTrackingValidation()" name="distance" [(ngModel)]="trackingOptions.distance">Distanz</mat-checkbox>
+        <mat-checkbox color="primary" (change)="setUpTrackingValidation()" name="height" [(ngModel)]="trackingOptions.height">Höhe</mat-checkbox>
+      </div>
+
+      <br>
+
+      <mat-slide-toggle name="isBreakBtwSets" color="primary" [(ngModel)]="isBreakBtwSets">Satzpause festlegen</mat-slide-toggle>
+      <br>
+      <div class="breakContainer" [ngClass]="{'d-none' : !isBreakBtwSets}">
+        <mat-form-field>
+          <mat-label>Satzpause einstellen in Sekunden</mat-label>
+          <input min="1" [required]="isBreakBtwSets"  id="breakTimeInput"  type="number" name="breakTimeInput"   placehoder="z.B. 90 Sekunden" #breakTimeInput="ngModel" [(ngModel)]="breakTime" matInput />
+        </mat-form-field>
+        <mat-error *ngIf="breakTimeInput.invalid && (breakTimeInput.touched || breakTimeInput.dirty)">
+          <span *ngIf="breakTimeInput.errors?.['min']">Mindestens 1 Sekunde</span>
+        </mat-error>
+      </div>
+
+    <div *ngIf="success" class="successMessage">Übung erstellt</div>
+    <div *ngIf="fail" class="text-danger">Upload fehlgeschlagen. Versuche es später erneut</div>
+    <button  type="submit" [disabled]="exerciseForm.invalid || (trackProgress && inValidTracking) || inValidMuscles || categoryInvalid " mat-raised-button>Übung erstellen</button>
+    </form>
+  </mat-card-content>
+</mat-card>
+
+
+
+
+<mat-card *ngIf="manage" class="manageExercisesCard">
+  <mat-card-title>Übungen verwalten <button (click)="closeManage()"><mat-icon>cancel</mat-icon></button></mat-card-title>
+  <mat-card-content>
+    <mat-form-field class="searchBar">
+      <mat-label>Durchsuche deine Übungen</mat-label>
+      <input matInput [(ngModel)]="searchExpression">
+    </mat-form-field>
+
+
+    <ng-container *ngFor="let exercise of allExercises; let i = index">
+      <ng-container *ngIf="includesSearch(exercise.element)">
+        <div class="normalState" [@cardState]="exercise.state" #exerciseCard  (click)="toggleCard(exercise, i)">
+          <mat-card>
+             <mat-card-title>{{exercise.element.exerciseName}}</mat-card-title>
+             <mat-card-content *ngIf="exercise.state === 'expanded'">
+              <ng-container *ngIf="exercise.element.exerciseCategory !== ''" >
+               <div class="categoryDisplay">{{exercise.element.exerciseCategory}}</div>
+              </ng-container>
+              <ng-container *ngIf="exercise.element.exerciseCategoryCustom !== '' " >
+               <div class="categoryDisplay">{{exercise.element.exerciseCategoryCustom}}</div>
+              </ng-container>
+              <div class="musclesDisplay">
+                <ng-container  *ngFor="let muscle of exercise.element.targetedMuscles | keyvalue">
+                  <div *ngIf="muscle.value">{{muscle.key}}</div>
+                </ng-container>
+              </div>
+              <div class="describtionDisplay">
+                {{exercise.element.exerciseDescribtion}}
+              </div>
+              <ng-container *ngIf="exercise.element.isBreakBtwSets">
+                <div class="breaktimeDisplay">
+                  Break between sets
+                 <div>{{exercise.element.breakTime}}s</div>
+                </div>
+              </ng-container>
+              <div class="trackDisplay" *ngIf="exercise.element.trackProgress">
+                Track progress
+               <div>
+                <ng-container *ngFor="let tracking of exercise.element.trackingOptions | keyvalue">
+                  <div *ngIf="tracking.value">{{tracking.key}}</div>
+               </ng-container>
+               </div>
+              </div>
+              <div class="positonDelBtn">
+                <button (click)="openDelete($event ,exercise.element.exerciseId, i)" mat-raised-button color="warn">Delete <mat-icon>delete</mat-icon></button>
+              </div>
+             </mat-card-content>
+
+          </mat-card>
+        </div>
+      </ng-container>
+    </ng-container>
+
+
+  </mat-card-content>
+</mat-card>
+
+
+
+
+
+
+<mat-card *ngIf="library" class="findExerciseCard">
+  <mat-card-title>Übung finden <button (click)="closeLibray()"><mat-icon>cancel</mat-icon></button></mat-card-title>
+</mat-card>
+
+
+<div *ngIf="isBlurr" [ngClass]="{'blurred': activateBlurr}" class="blurLayer"></div>

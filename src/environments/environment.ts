@@ -1,11 +1,11 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: "AIzaSyB95r4CpGmNO_zWKR27gcNBB1PrJn-9WHQ",
-    authDomain: "gainztracker-d903b.firebaseapp.com",
-    projectId: "gainztracker-d903b",
-    storageBucket: "gainztracker-d903b.appspot.com",
-    messagingSenderId: "404698349241",
-    appId: "1:404698349241:web:032c1cf5ec8d6124602568"
+    apiKey: "AIzaSyBVNiWDcpHTD9Yd5a1XlsznJ1Liwwjstns",
+    authDomain: "gainztracker-cf9b8.firebaseapp.com",
+    projectId: "gainztracker-cf9b8",
+    storageBucket: "gainztracker-cf9b8.appspot.com",
+    messagingSenderId: "202050946462",
+    appId: "1:202050946462:web:28feac3d67c792050e428f"
   }
 };

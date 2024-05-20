@@ -9,6 +9,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ReauthComponent } from './reauth/reauth.component';
 import { DeleteUserComponent } from './delete-user/delete-user.component';
+import { ChooseExerciseComponent } from './choose-exercise/choose-exercise.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -19,11 +20,12 @@ const routes: Routes = [
     path: 'home',
     component: HomeComponent,
     children: [
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // Standardroute
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent },
       { path: 'profile', component: ProfileComponent },
       { path: 'changePassword', component: ReauthComponent},
       { path: 'deleteUser', component: DeleteUserComponent},
+      { path: 'chooseExercise', component: ChooseExerciseComponent},
     ],
   },
 ];

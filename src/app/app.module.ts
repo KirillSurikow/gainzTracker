@@ -27,6 +27,12 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { PreventHoverDirective } from './directives/preventHover/prevent-hover.directive';
 import { ReauthComponent } from './reauth/reauth.component';
 import { DeleteUserComponent } from './delete-user/delete-user.component';
+import { ChooseExerciseComponent } from './choose-exercise/choose-exercise.component';
+import {MatSelectModule} from '@angular/material/select';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+
+
 
 
 
@@ -46,7 +52,7 @@ import { DeleteUserComponent } from './delete-user/delete-user.component';
     PreventHoverDirective,
     ReauthComponent,
     DeleteUserComponent,
-
+    ChooseExerciseComponent,
   ],
   imports: [
     BrowserModule,
@@ -59,15 +65,16 @@ import { DeleteUserComponent } from './delete-user/delete-user.component';
     FormsModule,
     CommonModule,
     AngularFireModule.initializeApp(environment.firebase),
-    MatTooltipModule
+    MatTooltipModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    MatSlideToggleModule,
+
   ],
   providers: [
     provideAnimationsAsync(),
-    importProvidersFrom([
       provideFirebaseApp(()=> initializeApp(environment.firebase)),
       provideAuth(()=> getAuth())
-    ]),
-
   ],
   bootstrap: [AppComponent]
 })
