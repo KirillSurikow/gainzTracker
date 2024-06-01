@@ -68,11 +68,12 @@ export class DataService {
         if (result) {
           result.forEach((doc) => {
             let trackingOptions = new TrackingOptions(
-              doc.data()['trackingOptions']['weight'],
-              doc.data()['trackingOptions']['repetitions'],
-              doc.data()['trackingOptions']['time'],
-              doc.data()['trackingOptions']['distance'],
-              doc.data()['trackingOptions']['height']
+              doc.data()['trackingOptions']['weight']._value,
+              doc.data()['trackingOptions']['repetitions']._value,
+              doc.data()['trackingOptions']['time_inS']._value,
+              doc.data()['trackingOptions']['time_inM']._value,
+              doc.data()['trackingOptions']['distance']._value,
+              doc.data()['trackingOptions']['height']._value
             );
             let targetedMuscles = new TargetedMuscles(
               doc.data()['targetedMuscles']['abdominals'],

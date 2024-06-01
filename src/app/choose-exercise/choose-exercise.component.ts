@@ -9,6 +9,8 @@ import { cardAnimations } from '../animations/cardanimations';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteExerciseComponent } from '../dialogs/deleteExercise/delete-exercise/delete-exercise.component';
 import { FetchService } from '../services/fetchService/fetch.service';
+import { KeyValue } from '@angular/common';
+import { TrackingOption } from '../interfaces/tracking-option';
 
 @Component({
   selector: 'app-choose-exercise',
@@ -43,6 +45,9 @@ export class ChooseExerciseComponent {
   searchExerciseCategory: string | undefined;
   searchExerciseMuscles: string | undefined;
   allSearchedExercises: any[] = [];
+  keyvalueComparator = (a: KeyValue<string, TrackingOption>, b: KeyValue<string, TrackingOption>): number => {
+    return 0;
+  };
 
   categorys: Category[] = [
     { value: '', viewValue: '' },
@@ -111,7 +116,8 @@ export class ChooseExerciseComponent {
     this.inValidTracking = !(
       this.trackingOptions.weight ||
       this.trackingOptions.repetitions ||
-      this.trackingOptions.time ||
+      this.trackingOptions.time_inM ||
+      this.trackingOptions.time_inS ||
       this.trackingOptions.distance ||
       this.trackingOptions.height
     );

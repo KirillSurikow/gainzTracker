@@ -270,36 +270,43 @@
           color="primary"
           (change)="setUpTrackingValidation()"
           name="weight"
-          [(ngModel)]="trackingOptions.weight"
+          [(ngModel)]="trackingOptions.weight._value"
           >Gewicht</mat-checkbox
         >
         <mat-checkbox
           color="primary"
           (change)="setUpTrackingValidation()"
           name="repetitions"
-          [(ngModel)]="trackingOptions.repetitions"
+          [(ngModel)]="trackingOptions.repetitions._value"
           >Wiederholungen</mat-checkbox
         >
         <mat-checkbox
           color="primary"
           (change)="setUpTrackingValidation()"
-          name="time"
-          [(ngModel)]="trackingOptions.time"
-          >Zeit</mat-checkbox
+          name="time_inS"
+          [(ngModel)]="trackingOptions.time_inS._value"
+          >Zeit in Sekunden</mat-checkbox
         >
+        <mat-checkbox
+        color="primary"
+        (change)="setUpTrackingValidation()"
+        name="time_inM"
+        [(ngModel)]="trackingOptions.time_inM._value"
+        >Zeit in Minuten</mat-checkbox
+      >
         <mat-checkbox
           color="primary"
           (change)="setUpTrackingValidation()"
           name="distance"
-          [(ngModel)]="trackingOptions.distance"
-          >Distanz</mat-checkbox
+          [(ngModel)]="trackingOptions.distance._value"
+          >Distanz in Meter</mat-checkbox
         >
         <mat-checkbox
           color="primary"
           (change)="setUpTrackingValidation()"
           name="height"
-          [(ngModel)]="trackingOptions.height"
-          >Höhe</mat-checkbox
+          [(ngModel)]="trackingOptions.height._value"
+          >Höhe in Meter</mat-checkbox
         >
       </div>
 
@@ -419,10 +426,10 @@
                   <ng-container
                     *ngFor="
                       let tracking of exercise.element.trackingOptions
-                        | keyvalue
+                        | keyvalue : keyvalueComparator
                     "
                   >
-                    <div *ngIf="tracking.value">{{ tracking.key }}</div>
+                    <div *ngIf="tracking.value._value">{{ tracking.value.alias }}</div>
                   </ng-container>
                 </div>
               </div>
