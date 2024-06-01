@@ -6,28 +6,28 @@ import {
 } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { DataService } from '../../../services/dataservice/data.service';
+import { DataService } from './../../services/dataservice/data.service';
 
 @Component({
   selector: 'app-delete-exercise',
-  templateUrl: './delete-exercise.component.html',
-  styleUrl: './delete-exercise.component.scss',
+  templateUrl: './delete-workout.component.html',
+  styleUrl: './delete-workout.component.scss',
   standalone: true,
   imports: [MatDialogTitle, MatButtonModule, MatIconModule],
 })
-export class DeleteExerciseComponent {
+export class DeleteWorkoutComponent {
   data: any | {};
   constructor(
-    public dialogRef: MatDialogRef<DeleteExerciseComponent>,
+    public dialogRef: MatDialogRef<DeleteWorkoutComponent>,
     @Inject(MAT_DIALOG_DATA) data: any,
     private dataService: DataService
   ) {
     this.data = data;
   }
 
- async delete_Exercise() {
-   await this.dataService.data_delete_exercise(this.data['exerciseId'], this.data['index']);
-   this.dialogRef.close(this.data['index']);
+ async delete_workout() {
+     this.dataService.delete_Workout(this.data.workoutIndex);
+     this.dialogRef.close(this.data.workoutIndex)
   }
 
   closeDialog(){

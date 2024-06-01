@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>Start Workout: {{workoutName}}</h2>
+<div class="exercisesContainer">
+  <div *ngFor="let exercise of allExercises">
+   {{exercise.exerciseName}}
+  </div>
+</div>
+<div class="buttonContainer">
+  <button (click)="closeDialog()" mat-flat-button color="warn">Cancel</button>
+  <button (click)="startWorkout()" mat-flat-button color="primary">Start</button>
+</div>
+

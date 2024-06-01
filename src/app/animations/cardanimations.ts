@@ -12,3 +12,16 @@ export const cardAnimations = [
     transition('expanded => inList', animate('300ms ease-out'))
   ])
 ];
+
+export const flyInAndOut =  [
+  trigger('flyIn', [
+    transition(':enter', [
+      style({ transform : 'translateX(100vw)' }),
+      animate('300ms ease-in', style({ transform : 'translateX(0vw)' }))
+    ]),
+    transition(':leave', [
+      style({ transform : 'translateX(0vw)' }),
+      animate('300ms ease-out', style({ transform : 'translateX(100vw)' }))
+    ])
+  ])
+]

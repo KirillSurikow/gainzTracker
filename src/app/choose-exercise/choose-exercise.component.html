@@ -13,10 +13,13 @@
 <mat-card *ngIf="customize" class="createExerciseCard">
   <mat-card-title
     >Übung erstellen
-    <button (click)="closeCustom()">
+    <button *ngIf="!comingFromLibray" (click)="closeCustom()">
       <mat-icon>cancel</mat-icon>
-    </button></mat-card-title
-  >
+    </button>
+    <button *ngIf="comingFromLibray" (click)="returnToLibrary()">
+      <mat-icon>keyboard_return</mat-icon>
+    </button>
+  </mat-card-title>
   <mat-card-content>
     <form (ngSubmit)="onSubmit()" #exerciseForm="ngForm">
       <mat-form-field>
@@ -52,13 +55,14 @@
 
       <h3>Welche Muskeln sollen beansprucht werden?</h3>
 
-      <div class="tMusclesContainer">
+      <div #musclesContainer class="tMusclesContainer">
         <mat-checkbox
           (change)="setUpMuscleValidation()"
           color="primary"
           name="abdominals"
           [(ngModel)]="targetedMuscles.abdominals"
           value="abdominals"
+          id = "abdominals"
           >Bauchmuskeln</mat-checkbox
         >
         <mat-checkbox
@@ -469,11 +473,13 @@
           #searchExerciseMusclesInput="ngModel"
           [(ngModel)]="searchExerciseMuscles"
         >
-        <option value=""></option>
+          <option value=""></option>
           <option
             *ngFor="let muscle of targetedMuscles | keyvalue"
             [value]="muscle.key"
-          >{{muscle.key}}</option>
+          >
+            {{ muscle.key }}
+          </option>
         </select>
       </mat-form-field>
       <mat-form-field>
@@ -492,11 +498,29 @@
         </select>
       </mat-form-field>
 
-      <button type="submit" [disabled]="" mat-raised-button>
-        Übungen finden
-      </button>
+      <button type="submit" mat-raised-button>Übungen finden</button>
     </form>
   </mat-card-content>
+</mat-card>
+<mat-card
+  class="searchedExercises"
+  *ngIf="library && allSearchedExercises.length !== 0"
+>
+  <mat-card *ngFor="let exercise of allSearchedExercises">
+    <mat-card-title>{{ exercise.name }}</mat-card-title>
+    <mat-card-content>
+      <span>{{ exercise.muscle }}</span>
+      <span>{{ exercise.type }}</span>
+    </mat-card-content>
+    <button
+      (click)="pick(exercise)"
+      type="submit"
+      color="primary"
+      mat-raised-button
+    >
+      Pick
+    </button>
+  </mat-card>
 </mat-card>
 
 <div

@@ -1,0 +1,10 @@
+<mat-card>
+  <mat-card-title>Wähle ein Workout aus</mat-card-title>
+  <mat-card-content>
+    <mat-card *ngFor="let workoutPlan of workoutPlans; let i = index" #workoutPlans (click)="openPreview(workoutPlan , i)">
+     <h3>
+      {{workoutPlan.workoutName}}
+     </h3>
+    </mat-card>
+  </mat-card-content>
+</mat-card>

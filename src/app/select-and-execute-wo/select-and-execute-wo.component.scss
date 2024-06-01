@@ -1,0 +1,55 @@
+:host {
+  width: 500px;
+  mat-card {
+    position: relative;
+    width: 100%;
+    text-align: center;
+    mat-card-title {
+      width: 100%;
+    }
+
+    .returnBtn {
+      width: fit-content;
+      height: fit-content;
+      background-color: transparent;
+      border: none;
+      position: absolute;
+      top: 3px;
+      right: 3px;
+
+      &:hover {
+        cursor: pointer;
+        transform: scale(1.1);
+      }
+
+      &:active {
+        cursor: pointer;
+        transform: scale(1.1);
+      }
+    }
+
+    mat-card-content{
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+
+      mat-card{
+        height: 75px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &:hover{
+          transform: translateY(-3px);
+          background-color: rgba(141, 236, 141, 0.5);
+        }
+
+        &:active{
+          transform: translateY(-3px);
+          background-color: rgba(141, 236, 141, 0.5);
+        }
+      }
+    }
+  }
+}

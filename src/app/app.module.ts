@@ -31,7 +31,12 @@ import { ChooseExerciseComponent } from './choose-exercise/choose-exercise.compo
 import {MatSelectModule} from '@angular/material/select';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
-
+import { ManageWorkoutsComponent } from './manage-workouts/manage-workouts.component';
+import { NameWorkoutComponent } from './dialogs/nameWorkout/name-workout/name-workout.component';
+import {DragDropModule} from '@angular/cdk/drag-drop';
+import { SelectAndExecuteWOComponent } from './select-and-execute-wo/select-and-execute-wo.component';
+import { ExecuteWorkoutComponent } from './execute-workout/execute-workout.component';
+import { DatePipe } from '@angular/common';
 
 
 
@@ -53,6 +58,11 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
     ReauthComponent,
     DeleteUserComponent,
     ChooseExerciseComponent,
+    ManageWorkoutsComponent,
+    NameWorkoutComponent,
+    SelectAndExecuteWOComponent,
+    ExecuteWorkoutComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -69,12 +79,13 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
     MatSelectModule,
     MatCheckboxModule,
     MatSlideToggleModule,
-
+    DragDropModule
   ],
   providers: [
     provideAnimationsAsync(),
       provideFirebaseApp(()=> initializeApp(environment.firebase)),
-      provideAuth(()=> getAuth())
+      provideAuth(()=> getAuth()),
+      DatePipe
   ],
   bootstrap: [AppComponent]
 })

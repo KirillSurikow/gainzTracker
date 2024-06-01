@@ -1,0 +1,17 @@
+<h2 mat-dialog-title>Name your Workout</h2>
+<form (ngSubmit)="onSubmit(exerciseForm)" #exerciseForm="ngForm">
+  <mat-form-field>
+    <input
+      id="workoutName"
+      required
+      type="text"
+      name="workoutName"
+      minlength="3"
+      pattern="^[a-zA-Z0-9\s-]*$"
+      #exerciseNameInput="ngModel"
+      [(ngModel)]="workoutName"
+      matInput
+    />
+  </mat-form-field>
+  <button mat-stroked-button color="accent" type="submit"><mat-icon>check</mat-icon></button>
+</form>

@@ -32,7 +32,8 @@ export class AppComponent implements OnInit {
               firstName: userData['firstName'],
               lastName: userData['lastName'],
               uid: userData['uid'],
-              username: userData['username']
+              username: userData['username'],
+              workoutPlans: userData['workoutPlans']
             };
             this.dataService.storeUserData(obj);
           }

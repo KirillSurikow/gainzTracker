@@ -6,9 +6,7 @@ import { Exercise } from '../models/exercise/exercise';
 import { DbService } from '../services/db/db.service';
 import { DataService } from '../services/dataservice/data.service';
 import { cardAnimations } from '../animations/cardanimations';
-import {
-  MatDialog,
-} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { DeleteExerciseComponent } from '../dialogs/deleteExercise/delete-exercise/delete-exercise.component';
 import { FetchService } from '../services/fetchService/fetch.service';
 
@@ -22,6 +20,7 @@ export class ChooseExerciseComponent {
   allExercises: any[] = [];
   library: boolean = false;
   customize: boolean = false;
+  comingFromLibray: boolean = false;
   manage: boolean = false;
   exerciseName: string | undefined;
   exerciseDescribtion: string | undefined;
@@ -40,9 +39,10 @@ export class ChooseExerciseComponent {
   isBlurr: boolean = false;
   activateBlurr: boolean = false;
   searchExpression: string | undefined;
-  searchExerciseName : string | undefined;
-  searchExerciseCategory : string | undefined;
-  searchExerciseMuscles : string | undefined;
+  searchExerciseName: string | undefined;
+  searchExerciseCategory: string | undefined;
+  searchExerciseMuscles: string | undefined;
+  allSearchedExercises: any[] = [];
 
   categorys: Category[] = [
     { value: '', viewValue: '' },
@@ -60,7 +60,7 @@ export class ChooseExerciseComponent {
     private db: DbService,
     private dataService: DataService,
     public dialog: MatDialog,
-    private fetch : FetchService
+    private fetch: FetchService
   ) {
     this.trackingOptions = new TrackingOptions();
     this.targetedMuscles = new TargetedMuscles();
@@ -79,6 +79,11 @@ export class ChooseExerciseComponent {
     this.library = false;
   }
 
+  returnToLibrary() {
+    this.library = true;
+    this.reset();
+  }
+
   closeManage() {
     this.manage = false;
   }
@@ -94,9 +99,9 @@ export class ChooseExerciseComponent {
       this.exerciseCategory,
       this.exerciseCategoryCustom
     );
-    await this.db.addExercise(exercise);
+    await this.dataService.add_exercise(exercise)
     this.success = this.db.uploadSuccessful;
-    this.fail = this.db.uploadFailed;
+    this.fail = this.db.uploadFailed; //Errorhandling einbauen
     if (this.success) {
       this.reset();
     }
@@ -173,7 +178,7 @@ export class ChooseExerciseComponent {
     }
     if (card === 'manage') {
       this.manage = true;
-      await this.db.getAllExercises();
+      await this.dataService.getAllExercises();
       this.allExercises = this.dataService.exercises;
       this.allExercises = this.allExercises.map((exercise) => {
         return { element: exercise, state: 'inList' };
@@ -248,12 +253,26 @@ export class ChooseExerciseComponent {
     }
   }
 
-  async onRequest(){
+  async onRequest() {
     try {
-      const result = await this.fetch.fetchExercises(this.searchExerciseName, this.searchExerciseMuscles, this.searchExerciseCategory);
-     console.log(result)
+      const result = await this.fetch.fetchExercises(
+        this.searchExerciseName,
+        this.searchExerciseMuscles,
+        this.searchExerciseCategory
+      );
+      this.allSearchedExercises = result;
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
+  }
+
+  pick(exercise: any) {
+    this.library = false;
+    this.customize = true;
+    this.comingFromLibray = true;
+    this.exerciseName = exercise.name;
+    this.exerciseCategory = exercise.type;
+    this.targetedMuscles[exercise.muscle as keyof TargetedMuscles] = true;
+    this.setUpMuscleValidation();
   }
 }

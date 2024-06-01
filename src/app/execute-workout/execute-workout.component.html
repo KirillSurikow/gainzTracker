@@ -1,0 +1,21 @@
+<h1>{{workout.woName}} <span *ngIf="showWorkoutMask">- Exercise {{workout.currentExercise + 1}}/{{workout.plan.length}}</span></h1>
+<div *ngIf="showStartscreen" class="startScreen">
+  <div (click)="startWorkout()" class="circleBtn">
+    <div>Start first exercise</div>
+  </div>
+</div>
+<div class="workoutMask" *ngIf="showWorkoutMask">
+   <h2>{{workout.plan[workout.currentExercise].exerciseName}}</h2>
+   <div class="results">
+      <ng-container *ngFor="let trackingOption of workout.plan[workout.currentExercise].trackingOptions | keyvalue">
+         <ng-container *ngIf="trackingOption.value">
+            <mat-form-field>
+              <mat-label>
+                {{trackingOption.key}}
+              </mat-label>
+              <input matInput type="number">
+            </mat-form-field>
+         </ng-container>
+      </ng-container>
+   </div>
+</div>

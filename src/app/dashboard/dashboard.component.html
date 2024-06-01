@@ -1,6 +1,6 @@
 <div>
-  <mat-card>Starte ein Workout</mat-card>
-<mat-card>Stelle ein Workout zusammen</mat-card>
+  <mat-card (click)="navigateTo('/home/startWorkout')">Starte ein Workout</mat-card>
+<mat-card (click)="navigateTo('/home/workouts')">Stelle ein Workout zusammen</mat-card>
 </div>
 <div>
 <mat-card (click)="navigateTo('/home/chooseExercise')">Erstelle und verwalte Übungen</mat-card>

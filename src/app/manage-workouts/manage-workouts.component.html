@@ -1,0 +1,100 @@
+<mat-card>
+  <mat-card-title> My Workouts </mat-card-title>
+  <button class="returnBtn" (click)="returnToDashboard()">
+    <mat-icon>keyboard_return</mat-icon>
+  </button>
+</mat-card>
+<div class="zoneWrapper" cdkDropListGroup>
+  <mat-card class="exerciseZone" cdkDropList id="exerciseList" [cdkDropListData]="allExercises">
+    <mat-form-field class="searchBar">
+      <mat-label>Search</mat-label>
+      <input matInput [(ngModel)]="searchExpression" />
+    </mat-form-field>
+
+<div class="exerciseList">
+  <ng-container *ngFor="let exercise of allExercises; let i = index">
+    <ng-container *ngIf="includesSearch(exercise)">
+      <mat-card class="exerciseCard" cdkDrag>
+        <mat-card-title>{{ exercise.exerciseName }}</mat-card-title>
+        <mat-card-content>
+          <ng-container *ngIf="exercise.exerciseCategory !== ''">
+            <div class="categoryDisplay">
+              {{ exercise.exerciseCategory }}
+            </div>
+          </ng-container>
+          <ng-container *ngIf="exercise.exerciseCategoryCustom !== ''">
+            <div class="categoryDisplay">
+              {{ exercise.exerciseCategoryCustom }}
+            </div>
+          </ng-container>
+          <div class="musclesDisplay">
+            <ng-container
+              *ngFor="let muscle of exercise.targetedMuscles | keyvalue"
+            >
+              <div *ngIf="muscle.value">{{ muscle.key }} |</div>
+            </ng-container>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </ng-container>
+  </ng-container>
+</div>
+  </mat-card>
+
+  <mat-card
+    (click)="requestNewWorkoutPlan()"
+    class="workoutZone"
+    [ngClass]="{ noWorkouts: workoutPlans.length == 0 }"
+  >
+    <div *ngIf="workoutPlans.length !== 0" class="headWZ">
+      <mat-form-field>
+        <mat-label>Choose a Workout</mat-label>
+        <select
+          matNativeControl
+          id="workoutPlans"
+          name="workoutPlans"
+          #workoutPlansInput
+          [(ngModel)]="currentWorkoutValueString"
+          (change)="isWorkoutSelcted(workoutPlansInput)"
+        >
+          <option
+            [value]="i"
+            *ngFor="let workoutPlan of workoutPlans; let i = index"
+          >
+            {{ workoutPlan.workoutName }}
+          </option>
+        </select>
+      </mat-form-field>
+      <div class="navBox">
+        <button (click)="saveChanges()"><mat-icon>save</mat-icon></button>
+        <button (click)="openDeleteDialog()"><mat-icon>delete</mat-icon></button>
+        <button (click)="nameWorkoutPlan()"><mat-icon>add</mat-icon></button>
+      </div>
+    </div>
+
+    <mat-card-subtitle *ngIf="workoutPlans.length == 0">
+      Erstelle dein erstes Workout</mat-card-subtitle
+    >
+    <mat-card
+      @flyIn
+      *ngIf="workoutCardShow"
+    >
+      <span *ngIf="workoutCardShow && addFirstExercise"
+        >Ziehe die Übungen in dieses Feld</span
+      >
+       <div      
+       cdkDropList
+       class="workoutList"
+       id="workoutList"
+       [cdkDropListData]="currentWorkout?.allExercises"
+       (cdkDropListDropped)="drop($event)" 
+       *ngIf="workoutCardShow"
+       #workoutContainer>
+        <mat-card class="exerciseInWO" *ngFor="let exercise of currentWorkout?.allExercises; let i = index" cdkDrag>
+          {{ exercise.exerciseName }}
+          <button (click)="deleteFromWO(i)"><mat-icon>delete</mat-icon></button>
+        </mat-card>
+       </div>
+    </mat-card>
+  </mat-card>
+</div>

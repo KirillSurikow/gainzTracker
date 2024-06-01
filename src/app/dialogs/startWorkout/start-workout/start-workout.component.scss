@@ -1,0 +1,28 @@
+:host{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  height: 500px;
+  width: 300px;
+
+  h2{
+    text-align: center;
+  }
+
+  .exercisesContainer{
+    max-height: 400px;
+  }
+
+  .buttonContainer{
+    position: absolute;
+    right: 13px;
+    bottom: 3px;
+    display: flex;
+    gap: 3px;
+
+    button{
+      width: 80px;
+    }
+  }
+}

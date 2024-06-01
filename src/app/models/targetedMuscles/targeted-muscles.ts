@@ -52,11 +52,5 @@ export class TargetedMuscles {
     this.triceps = triceps || false;
   }
 
-  toObject(): Record<string, any> {
-    const obj: Record<string, any> = {};
-    Object.keys(this).forEach((key) => {
-      obj[key] = this[key as keyof this];
-    });
-    return obj;
-  }
+
 }

@@ -135,6 +135,25 @@
     }
   }
 
+  .searchedExercises{
+    mat-card{
+      position: relative;
+      mat-card-content{
+        span{
+          margin-right: 16px;
+        }
+      }
+
+      button{
+        position: absolute;
+        width: fit-content;
+        height: fit-content;
+        top: 4px;
+        right: 4px;
+      }
+    }
+  }
+
   .manageExercisesCard {
     mat-card-title {
       position: relative;

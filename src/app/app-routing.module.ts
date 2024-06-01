@@ -10,6 +10,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ReauthComponent } from './reauth/reauth.component';
 import { DeleteUserComponent } from './delete-user/delete-user.component';
 import { ChooseExerciseComponent } from './choose-exercise/choose-exercise.component';
+import { ManageWorkoutsComponent } from './manage-workouts/manage-workouts.component';
+import { SelectAndExecuteWOComponent } from './select-and-execute-wo/select-and-execute-wo.component';
+import { ExecuteWorkoutComponent } from './execute-workout/execute-workout.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -26,6 +29,9 @@ const routes: Routes = [
       { path: 'changePassword', component: ReauthComponent},
       { path: 'deleteUser', component: DeleteUserComponent},
       { path: 'chooseExercise', component: ChooseExerciseComponent},
+      { path: 'workouts', component: ManageWorkoutsComponent},
+      { path: 'startWorkout', component: SelectAndExecuteWOComponent},
+      { path: 'executeWorkout', component: ExecuteWorkoutComponent},
     ],
   },
 ];

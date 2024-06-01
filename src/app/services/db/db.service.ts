@@ -14,9 +14,8 @@ import {
 import { initializeApp } from 'firebase/app';
 import { environment } from '../../../environments/environment';
 import { Exercise } from '../../models/exercise/exercise';
-import { DataService } from '../dataservice/data.service';
-import { TrackingOptions } from '../../models/trackingOptions/tracking-options';
-import { TargetedMuscles } from '../../models/targetedMuscles/targeted-muscles';
+import { WorkoutPlan } from '../../models/workoutPlan/workout-plan';
+
 
 @Injectable({
   providedIn: 'root',
@@ -26,7 +25,7 @@ export class DbService {
   uploadSuccessful: boolean = false;
   uploadFailed: boolean = false;
 
-  constructor(private dataService: DataService) {
+  constructor() {
     if (!DbService.firestore) {
       DbService.firestore = getFirestore(initializeApp(environment.firebase));
     }
@@ -69,83 +68,61 @@ export class DbService {
     });
   }
 
-  async addExercise(exercise: Exercise) {
-    const ref = collection(
-      DbService.firestore,
-      `users/${this.dataService.user?.uid}/exercises`
-    );
+  async updateExercise(
+    userId: string | undefined,
+    exerciseId: string | undefined
+  ) {
+    const ref = doc(DbService.firestore, `users/${userId}/exercises/${exerciseId}`);
+    updateDoc(ref, { id: exerciseId });
+  }
+
+  async addExercise(
+    userId: string | undefined,
+    exercise: Exercise
+  ): Promise<any> {
+    const ref = collection(DbService.firestore, `users/${userId}/exercises`);
     let upload = exercise.toObject();
-    await addDoc(ref, upload)
-      .then((docRef) => {
-        updateDoc(docRef, { id: docRef.id });
-      })
-      .then(() => {
-        this.uploadSuccessful = true;
-        this.dataService.exercisesUpToDate = false;
-      })
+    return await addDoc(ref, upload);
+  }
+
+  async getAllExercises(userId: string | undefined) {
+    const ref = collection(DbService.firestore, `users/${userId}/exercises`);
+    const querySnapshot = await getDocs(ref);
+    return querySnapshot;
+  }
+
+  async deleteExercise(exerciseId: string, userId: string | undefined) {
+    const path = `users/${userId}/exercises/ ${exerciseId}`;
+    await deleteDoc(doc(DbService.firestore, path))
+      .then(() => {})
       .catch((error) => {
         console.log(error);
-        this.uploadFailed = true;
       });
   }
 
-  async getAllExercises() {
-    if (!this.dataService.exercisesUpToDate) {
-      const ref = collection(
-        DbService.firestore,
-        `users/${this.dataService.user?.uid}/exercises`
-      );
-      const querySnapshot = await getDocs(ref);
-      querySnapshot.forEach((doc) => {
-        let trackingOptions = new TrackingOptions(
-          doc.data()['trackingOptions']['weight'],
-          doc.data()['trackingOptions']['repetitions'],
-          doc.data()['trackingOptions']['time'],
-          doc.data()['trackingOptions']['distance'],
-          doc.data()['trackingOptions']['height']
-        );
-        let targetedMuscles = new TargetedMuscles(
-          doc.data()['targetedMuscles']['abdominals'],
-          doc.data()['targetedMuscles']['abductors'],
-          doc.data()['targetedMuscles']['adductors'],
-          doc.data()['targetedMuscles']['biceps'],
-          doc.data()['targetedMuscles']['calves'],
-          doc.data()['targetedMuscles']['chest'],
-          doc.data()['targetedMuscles']['forearms'],
-          doc.data()['targetedMuscles']['glutes'],
-          doc.data()['targetedMuscles']['hamstrings'],
-          doc.data()['targetedMuscles']['lats'],
-          doc.data()['targetedMuscles']['lower_back'],
-          doc.data()['targetedMuscles']['middle_back'],
-          doc.data()['targetedMuscles']['neck'],
-          doc.data()['targetedMuscles']['quadriceps'],
-          doc.data()['targetedMuscles']['traps'],
-          doc.data()['targetedMuscles']['triceps']
-        );
-        this.dataService.storeUserExercises(
-          new Exercise(
-            doc.data()['exerciseName'],
-            targetedMuscles,
-            doc.data()['trackProgress'],
-            trackingOptions,
-            doc.data()['breakTime'],
-            doc.data()['exerciseDescribtion'],
-            doc.data()['exerciseCategory'],
-            doc.data()['exerciseCategoryCustom'],
-            doc.data()['id']
-          )
-        );
-      });
-      this.dataService.exercisesUpToDate = true;
-    }
+  async uploadChangesWoPlans(workout_plans : WorkoutPlan[], userId: string |undefined){
+    const path=`users/${userId}`
+   let workoutPlans= this.prepareWOPlans(workout_plans)
+    const ref = doc(DbService.firestore, path);
+    await updateDoc(ref , {workoutPlans : workoutPlans})
   }
 
-  async deleteExercise(exerciseId: string) {
-    const path = `users/${this.dataService.user?.uid}/exercises/ ${exerciseId}`;
-    await deleteDoc(doc(DbService.firestore, path)).then(() => {
+  prepareWOPlans(array : WorkoutPlan[]){
+  let response = array.map((workout)=>{
+    return workout.toObject();
+   })
+   response.forEach(element => {
+    element['allExercises']= element['allExercises'].map((exercise : Exercise)=>{
+       return exercise.exerciseId
+    })
+   });
+   return response;
+  }
 
-    }).catch((error)=>{
-      console.log(error)
-    });
+  async getAllWOPlans(userId : string | undefined){
+    const path = `users/${userId}`
+    const ref = doc(DbService.firestore, path)
+    const docSnap = await getDoc(ref);
+    return docSnap;
   }
 }
