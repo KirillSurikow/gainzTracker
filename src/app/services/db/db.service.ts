@@ -15,6 +15,7 @@ import { initializeApp } from 'firebase/app';
 import { environment } from '../../../environments/environment';
 import { Exercise } from '../../models/exercise/exercise';
 import { WorkoutPlan } from '../../models/workoutPlan/workout-plan';
+import { Marks } from '../../models/marks/marks';
 
 
 @Injectable({
@@ -74,6 +75,20 @@ export class DbService {
   ) {
     const ref = doc(DbService.firestore, `users/${userId}/exercises/${exerciseId}`);
     updateDoc(ref, { id: exerciseId });
+  }
+
+  async updateExerciseRecord(
+    userId: string | undefined,
+    exerciseId: string | undefined,
+    records : Array<any>
+  ) {
+    const ref = doc(DbService.firestore, `users/${userId}/exercises/${exerciseId}`);
+    await updateDoc(ref, { records });
+  }
+
+  async updateProgress(userId: string | undefined, set : any){
+    const ref = collection(DbService.firestore, `users/${userId}/exercises/${set['exerciseId']}/progress`);
+    await addDoc(ref, set);
   }
 
   async addExercise(

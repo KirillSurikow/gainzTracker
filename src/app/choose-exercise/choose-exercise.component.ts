@@ -116,8 +116,8 @@ export class ChooseExerciseComponent {
     this.inValidTracking = !(
       this.trackingOptions.weight ||
       this.trackingOptions.repetitions ||
-      this.trackingOptions.time_inM ||
-      this.trackingOptions.time_inS ||
+      this.trackingOptions.time_inSmin ||
+      this.trackingOptions.time_inSmax ||
       this.trackingOptions.distance ||
       this.trackingOptions.height
     );

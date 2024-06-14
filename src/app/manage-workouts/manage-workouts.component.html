@@ -5,40 +5,45 @@
   </button>
 </mat-card>
 <div class="zoneWrapper" cdkDropListGroup>
-  <mat-card class="exerciseZone" cdkDropList id="exerciseList" [cdkDropListData]="allExercises">
+  <mat-card
+    class="exerciseZone"
+    cdkDropList
+    id="exerciseList"
+    [cdkDropListData]="allExercises"
+  >
     <mat-form-field class="searchBar">
       <mat-label>Search</mat-label>
       <input matInput [(ngModel)]="searchExpression" />
     </mat-form-field>
 
-<div class="exerciseList">
-  <ng-container *ngFor="let exercise of allExercises; let i = index">
-    <ng-container *ngIf="includesSearch(exercise)">
-      <mat-card class="exerciseCard" cdkDrag>
-        <mat-card-title>{{ exercise.exerciseName }}</mat-card-title>
-        <mat-card-content>
-          <ng-container *ngIf="exercise.exerciseCategory !== ''">
-            <div class="categoryDisplay">
-              {{ exercise.exerciseCategory }}
-            </div>
-          </ng-container>
-          <ng-container *ngIf="exercise.exerciseCategoryCustom !== ''">
-            <div class="categoryDisplay">
-              {{ exercise.exerciseCategoryCustom }}
-            </div>
-          </ng-container>
-          <div class="musclesDisplay">
-            <ng-container
-              *ngFor="let muscle of exercise.targetedMuscles | keyvalue"
-            >
-              <div *ngIf="muscle.value">{{ muscle.key }} |</div>
-            </ng-container>
-          </div>
-        </mat-card-content>
-      </mat-card>
-    </ng-container>
-  </ng-container>
-</div>
+    <div class="exerciseList">
+      <ng-container *ngFor="let exercise of allExercises; let i = index">
+        <ng-container *ngIf="includesSearch(exercise)">
+          <mat-card class="exerciseCard" cdkDrag>
+            <mat-card-title>{{ exercise.exerciseName }}</mat-card-title>
+            <mat-card-content>
+              <ng-container *ngIf="exercise.exerciseCategory !== ''">
+                <div class="categoryDisplay">
+                  {{ exercise.exerciseCategory }}
+                </div>
+              </ng-container>
+              <ng-container *ngIf="exercise.exerciseCategoryCustom !== ''">
+                <div class="categoryDisplay">
+                  {{ exercise.exerciseCategoryCustom }}
+                </div>
+              </ng-container>
+              <div class="musclesDisplay">
+                <ng-container
+                  *ngFor="let muscle of exercise.targetedMuscles | keyvalue"
+                >
+                  <div *ngIf="muscle.value">{{ muscle.key }} |</div>
+                </ng-container>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </ng-container>
+      </ng-container>
+    </div>
   </mat-card>
 
   <mat-card
@@ -67,7 +72,9 @@
       </mat-form-field>
       <div class="navBox">
         <button (click)="saveChanges()"><mat-icon>save</mat-icon></button>
-        <button (click)="openDeleteDialog()"><mat-icon>delete</mat-icon></button>
+        <button (click)="openDeleteDialog()">
+          <mat-icon>delete</mat-icon>
+        </button>
         <button (click)="nameWorkoutPlan()"><mat-icon>add</mat-icon></button>
       </div>
     </div>
@@ -75,26 +82,28 @@
     <mat-card-subtitle *ngIf="workoutPlans.length == 0">
       Erstelle dein erstes Workout</mat-card-subtitle
     >
-    <mat-card
-      @flyIn
-      *ngIf="workoutCardShow"
-    >
+    <mat-card @flyIn *ngIf="workoutCardShow">
       <span *ngIf="workoutCardShow && addFirstExercise"
         >Ziehe die Übungen in dieses Feld</span
       >
-       <div      
-       cdkDropList
-       class="workoutList"
-       id="workoutList"
-       [cdkDropListData]="currentWorkout?.allExercises"
-       (cdkDropListDropped)="drop($event)" 
-       *ngIf="workoutCardShow"
-       #workoutContainer>
-        <mat-card class="exerciseInWO" *ngFor="let exercise of currentWorkout?.allExercises; let i = index" cdkDrag>
+      <div
+        cdkDropList
+        class="workoutList"
+        id="workoutList"
+        [cdkDropListData]="currentWorkout?.allExercises"
+        (cdkDropListDropped)="drop($event)"
+        *ngIf="workoutCardShow"
+        #workoutContainer
+      >
+        <mat-card
+          class="exerciseInWO"
+          *ngFor="let exercise of currentWorkout?.allExercises; let i = index"
+          cdkDrag
+        >
           {{ exercise.exerciseName }}
           <button (click)="deleteFromWO(i)"><mat-icon>delete</mat-icon></button>
         </mat-card>
-       </div>
+      </div>
     </mat-card>
   </mat-card>
 </div>

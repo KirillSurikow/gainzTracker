@@ -1,0 +1,30 @@
+<div *ngIf="!isStopwatch" class="timerSetUp">
+  <input
+    (change)="adjustTime()"
+    min="0"
+    class="leftInput"
+    type="number"
+    [(ngModel)]="minutes"
+    [value]="formatNumber(minutes)"
+    placeholder="1"
+  />
+  <span>:</span>
+  <input
+    (change)="adjustTime()"
+    min="0"
+    max="59"
+    class="rightInput"
+    type="number"
+    [(ngModel)]="seconds"
+    [value]="formatNumber(seconds)"
+    placeholder="00"
+    value="0"
+  />
+</div>
+<div class="time">{{ time }}</div>
+<div class="buttons">
+  <button (click)="start()"><mat-icon>play_arrow</mat-icon></button>
+  <button (click)="stop()"><mat-icon>pause</mat-icon></button>
+  <button (click)="reset()"><mat-icon>restart_alt</mat-icon></button>
+  <button (click)="apply()"><mat-icon>edit_square</mat-icon></button>
+</div>

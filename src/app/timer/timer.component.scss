@@ -1,0 +1,30 @@
+:host {
+  display: flex;
+  justify-content: center;
+
+  .timer {
+    display: flex;
+    justify-content: center;
+
+    button {
+      background-color: white;
+      cursor: pointer;
+      border: none;
+
+      &:hover {
+        background-color: rgba(141, 236, 141, 0.5);
+        transform: translateY(-4px);
+      }
+
+      &:active {
+        background-color: rgba(141, 236, 141, 0.5);
+        transform: translateY(-4px);
+      }
+    }
+
+    .time-display {
+      font-size: 32px;
+      color: green;
+    }
+  }
+}

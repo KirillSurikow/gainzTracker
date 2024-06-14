@@ -5,6 +5,12 @@ import { DbService } from '../db/db.service';
 import { TrackingOptions } from '../../models/trackingOptions/tracking-options';
 import { TargetedMuscles } from '../../models/targetedMuscles/targeted-muscles';
 import { WorkoutPlan } from '../../models/workoutPlan/workout-plan';
+import { Set } from '../../models/set/set';
+import { Marks } from '../../models/marks/marks';
+
+type AllSets = {
+  [key: number]: Set[];
+};
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +22,7 @@ export class DataService {
   workoutPlans: WorkoutPlan[] = [];
   woPlansNotUptoDate: boolean = true;
   currentWOPlan: number | undefined;
+  progressUpToDate : boolean = false;
 
   constructor(private db: DbService) {}
 
@@ -67,11 +74,19 @@ export class DataService {
       await this.db.getAllExercises(this.user?.uid).then((result) => {
         if (result) {
           result.forEach((doc) => {
+          let records = doc.data()['records'].map((element : any)=>{
+             let record = new Marks();
+             record.exerciseId = element['exerciseId'];
+             record.setNumber = element['setNumber'];
+             record.bestValues = element['bestValues'];
+             record.lastValues = element['lastValues'];
+             return record;
+          })
             let trackingOptions = new TrackingOptions(
               doc.data()['trackingOptions']['weight']._value,
               doc.data()['trackingOptions']['repetitions']._value,
-              doc.data()['trackingOptions']['time_inS']._value,
-              doc.data()['trackingOptions']['time_inM']._value,
+              doc.data()['trackingOptions']['time_inSmin']._value,
+              doc.data()['trackingOptions']['time_inSmax']._value,
               doc.data()['trackingOptions']['distance']._value,
               doc.data()['trackingOptions']['height']._value
             );
@@ -103,7 +118,8 @@ export class DataService {
                 doc.data()['exerciseDescribtion'],
                 doc.data()['exerciseCategory'],
                 doc.data()['exerciseCategoryCustom'],
-                doc.data()['id']
+                doc.data()['id'],
+                records
               )
             );
           });
@@ -125,6 +141,37 @@ export class DataService {
       this.db.updateExercise(this.user?.uid, result.id);
       this.db.uploadSuccessful = true;
     });
+  }
+
+  updateRecordsOfExercise(exercises: Exercise[]) {
+    exercises.forEach((exercise) => {
+      let target = exercise.records.map((record) => {
+        return record.recordsToObject();
+      });
+
+      this.db.updateExerciseRecord(this.user?.uid, exercise.exerciseId, target);
+      this.exercisesUpToDate = false;
+    });
+  }
+
+  updateProgress(allSets: AllSets) {
+    let allSetsArr: Array<object> = [];
+    Object.entries(allSets).forEach((exercise) => {
+      let exerciseArr : Array<object> = []
+      exercise.forEach((sets) => {
+        if (typeof sets !== 'string') {
+           exerciseArr = sets.map((set) => {
+            return set.toObject();
+          });
+        }
+      });
+
+      allSetsArr = [...allSetsArr, ... exerciseArr];
+      allSetsArr.forEach(set => {
+        this.db.updateProgress(this.user?.uid, set)
+      });
+    });
+    this.progressUpToDate = false;
   }
 
   async upload_changes_woPlans() {

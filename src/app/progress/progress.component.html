@@ -1,0 +1,107 @@
+<div class="headerLine">
+  <h1>Progess</h1>
+  <button (click)="initateDiagramm()" mat-raised-button color="primary">See Diagramm</button>
+</div>
+<div class="sortByWOorALLContainer">
+  <div class="sortByWOorALL" (click)="toggleFilter()">
+    <div class="left" [ngClass]="{ grey: !showAllExercises }">Workout</div>
+    <div class="right" [ngClass]="{ grey: showAllExercises }">
+      All Exercises
+    </div>
+  </div>
+</div>
+<mat-form-field class="searchBar" *ngIf="showAllExercises">
+  <mat-label>Search</mat-label>
+  <input matInput [(ngModel)]="searchExpression" />
+</mat-form-field>
+
+<div class="exerciseList" *ngIf="showAllExercises">
+  <ng-container *ngFor="let exercise of allExercises; let i = index">
+    <ng-container *ngIf="includesSearch(exercise)">
+      <mat-card class="exerciseCard" cdkDrag>
+        <mat-card-title>{{ exercise.exerciseName }}</mat-card-title>
+        <mat-card-content>
+          <ng-container *ngIf="exercise.exerciseCategory !== ''">
+            <div class="categoryDisplay">
+              {{ exercise.exerciseCategory }}
+            </div>
+          </ng-container>
+          <ng-container *ngIf="exercise.exerciseCategoryCustom !== ''">
+            <div class="categoryDisplay">
+              {{ exercise.exerciseCategoryCustom }}
+            </div>
+          </ng-container>
+          <div class="musclesDisplay">
+            <ng-container
+              *ngFor="let muscle of exercise.targetedMuscles | keyvalue"
+            >
+              <div *ngIf="muscle.value">{{ muscle.key }} |</div>
+            </ng-container>
+          </div>
+          <mat-checkbox
+          color="primary"
+          [(ngModel)]="exerciseCheckboxStates[exercise.exerciseId!]"
+            (change)="
+              toggleForAnalysis(exercise.exerciseName, exercise.exerciseId , false)
+            "
+          ></mat-checkbox>
+        </mat-card-content>
+      </mat-card>
+    </ng-container>
+  </ng-container>
+</div>
+
+<div class="workoutList" *ngIf="!showAllExercises">
+  <mat-card>
+    <div class="workoutContainer" *ngFor="let workout of workoutPlans">
+      <div class="title">
+        {{ workout.workoutName }}
+        <mat-checkbox
+        color="primary"
+          [id]="workout.workoutName + '-main'"
+          (change)="toggleAllForAnalysis(workout.workoutName, workout.allExercises.length)"
+          [(ngModel)]="mainCheckboxStates[workout.workoutName]"
+        ></mat-checkbox>
+      </div>
+      <div class="exercises">
+        <div
+          class="exercise"
+          *ngFor="let exercise of workout.allExercises; let i = index"
+        >
+          <div class="exerciseName">
+            {{ exercise.exerciseName }}
+          </div>
+          <ng-container *ngIf="exercise.exerciseCategory !== ''">
+            <div class="categoryDisplay">
+              {{ exercise.exerciseCategory }}
+            </div>
+          </ng-container>
+          <ng-container *ngIf="exercise.exerciseCategoryCustom !== ''">
+            <div class="categoryDisplay">
+              {{ exercise.exerciseCategoryCustom }}
+            </div>
+          </ng-container>
+          <div class="musclesDisplay">
+            <ng-container
+              *ngFor="let muscle of exercise.targetedMuscles | keyvalue"
+            >
+              <div *ngIf="muscle.value">{{ muscle.key }} |</div>
+            </ng-container>
+          </div>
+          <mat-checkbox
+          color="primary"
+            #checkboxRef
+            [id]="workout.workoutName + '-' + i"
+            [attr.exercise]="exercise.exerciseName"
+            [attr.exerciseId]="exercise.exerciseId"
+            [attr.workout]="workout.workoutName"
+            (change)="
+              toggleForAnalysis(exercise.exerciseName, exercise.exerciseId, false, workout.workoutName)
+            "
+            [(ngModel)]="exerciseCheckboxStates[exercise.exerciseId!]"
+          ></mat-checkbox>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+</div>

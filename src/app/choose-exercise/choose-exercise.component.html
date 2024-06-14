@@ -283,16 +283,16 @@
         <mat-checkbox
           color="primary"
           (change)="setUpTrackingValidation()"
-          name="time_inS"
-          [(ngModel)]="trackingOptions.time_inS._value"
-          >Zeit in Sekunden</mat-checkbox
+          name="time_inSmin"
+          [(ngModel)]="trackingOptions.time_inSmin._value"
+          >Zeit in Sekunden(min)</mat-checkbox
         >
         <mat-checkbox
         color="primary"
         (change)="setUpTrackingValidation()"
-        name="time_inM"
-        [(ngModel)]="trackingOptions.time_inM._value"
-        >Zeit in Minuten</mat-checkbox
+        name="time_inSmax"
+        [(ngModel)]="trackingOptions.time_inSmax._value"
+        >Zeit in Sekunden(max)</mat-checkbox
       >
         <mat-checkbox
           color="primary"

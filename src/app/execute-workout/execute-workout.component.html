@@ -1,21 +1,206 @@
-<h1>{{workout.woName}} <span *ngIf="showWorkoutMask">- Exercise {{workout.currentExercise + 1}}/{{workout.plan.length}}</span></h1>
-<div *ngIf="showStartscreen" class="startScreen">
+<h1 *ngIf="!workoutFinished">
+  {{ workout.woName }}
+  <span *ngIf="showWorkoutMask && !workoutFinished"
+    >- Exercise {{ workout.currentExerciseNumber + 1 }}/{{
+      workout.plan.length
+    }}</span
+  >
+</h1>
+<div *ngIf="showStartscreen && !workoutFinished" class="startScreen">
   <div (click)="startWorkout()" class="circleBtn">
     <div>Start first exercise</div>
   </div>
 </div>
-<div class="workoutMask" *ngIf="showWorkoutMask">
-   <h2>{{workout.plan[workout.currentExercise].exerciseName}}</h2>
-   <div class="results">
-      <ng-container *ngFor="let trackingOption of workout.plan[workout.currentExercise].trackingOptions | keyvalue">
-         <ng-container *ngIf="trackingOption.value">
-            <mat-form-field>
-              <mat-label>
-                {{trackingOption.key}}
-              </mat-label>
-              <input matInput type="number">
-            </mat-form-field>
-         </ng-container>
+<div class="workoutMask" *ngIf="showWorkoutMask && !workoutFinished">
+  <h2>
+    {{ workout.plan[workout.currentExerciseNumber].exerciseName }} - Set
+    {{ workout.currentSetNumber + 1 }} /
+    {{ workout.totalSetsOfCurrentExercise }}
+  </h2>
+  <div class="timerOrWatch" *ngIf="workout.provideTimerOrStoppwatch">
+    <div class="timerStopwatchToggle" (click)="toggleTimerOrStoppwatch()">
+      <div class="left" [ngClass]="{ grey: !isStopwatch }">
+        <mat-icon>hourglass_top</mat-icon>
+      </div>
+      <div class="right" [ngClass]="{ grey: isStopwatch }">
+        <mat-icon>timer</mat-icon>
+      </div>
+    </div>
+
+    <app-timer-and-stopp-watch
+      *ngIf="!isStopwatch && !workout.showTimer"
+      [initialTime]="60"
+      [isStopwatch]="isStopwatch"
+    ></app-timer-and-stopp-watch>
+
+    <app-timer-and-stopp-watch
+      *ngIf="isStopwatch && !workout.showTimer"
+      [initialTime]="0"
+      [isStopwatch]="isStopwatch"
+    ></app-timer-and-stopp-watch>
+  </div>
+  <div class="results">
+    <ng-container
+      *ngIf="workout.plan[workout.currentExerciseNumber].trackProgress"
+    >
+      <ng-container
+        *ngFor="
+          let trackingOption of workout.allSets[workout.currentExerciseNumber][
+            workout.currentSetNumber
+          ].results | keyvalue : keyvalueComparator
+        "
+      >
+        <div
+          class="inputContainer"
+          *ngIf="
+            workout.plan[workout.currentExerciseNumber].records.length !== 0
+          "
+        >
+          <div class="innerContainer">
+            <div class="history">
+              <ng-container
+                *ngIf="
+                  workout.plan[workout.currentExerciseNumber].records.length !==
+                  0
+                "
+              >
+                <button
+                  *ngIf="
+                    workout.plan[workout.currentExerciseNumber].records[
+                      workout.currentSetNumber
+                    ] &&
+                    workout.plan[workout.currentExerciseNumber].records[
+                      workout.currentSetNumber
+                    ].bestValues[trackingOption.key]
+                  "
+                  (click)="
+                    workout.adopt(
+                      workout.plan[workout.currentExerciseNumber].records[
+                        workout.currentSetNumber
+                      ].bestValues[trackingOption.key]._value,
+                      trackingOption.key
+                    )
+                  "
+                  class="value"
+                >
+                  <mat-icon>emoji_events</mat-icon
+                  >{{
+                    workout.plan[workout.currentExerciseNumber].records[
+                      workout.currentSetNumber
+                    ].bestValues[trackingOption.key]._value
+                  }}
+                </button>
+              </ng-container>
+              <ng-container>
+                <button
+                *ngIf="
+                workout.plan[workout.currentExerciseNumber].records[
+                  workout.currentSetNumber
+                ] &&
+                workout.plan[workout.currentExerciseNumber].records[
+                  workout.currentSetNumber
+                ].lastValues[trackingOption.key]
+              "
+                (click)="
+                  workout.adopt(
+                    workout.plan[workout.currentExerciseNumber].records[
+                      workout.currentSetNumber
+                    ].lastValues[trackingOption.key]._value,
+                    trackingOption.key
+                  )
+                "
+                class="value"
+              >
+                <mat-icon>skip_previous</mat-icon
+                >{{
+                  workout.plan[workout.currentExerciseNumber].records[
+                    workout.currentSetNumber
+                  ].lastValues[trackingOption.key]._value
+                }}
+              </button>
+              </ng-container>
+            </div>
+            <input
+              minlength="1"
+              [(ngModel)]="trackingOption.value._value"
+              #progressInputs="ngModel"
+              required
+              [placeholder]="trackingOption.value.alias"
+              type="number"
+            />
+            <button
+              (mousedown)="startListening(trackingOption)"
+              (mouseup)="stopListening()"
+              (mouseleave)="stopListening()"
+              (touchstart)="startListening(trackingOption)"
+              (touchend)="stopListening()"
+            >
+              <mat-icon>mic</mat-icon>
+            </button>
+          </div>
+        </div>
       </ng-container>
-   </div>
+      <div *ngIf="invalidInputs" class="text-danger">Check the fields</div>
+    </ng-container>
+  </div>
+
+  <app-timer
+    *ngIf="workout.showTimer"
+    [start]="startTimer"
+    [startTime]="workout.plan[workout.currentExerciseNumber].breakTime"
+    (timerStart)="onTimerStart()"
+    (timerStop)="onTimerStop()"
+    (timerEnd)="onTimerEnd()"
+    (timerReset)="onTimerReset()"
+  >
+  </app-timer>
+  <div class="buttonContainer">
+    <div class="upperBundle">
+      <div class="buttonBundle">
+        <button (click)="prevExercise()" mat-flat-button color="primary">
+          Prev. Exercise
+        </button>
+        <button (click)="prevSet()" mat-flat-button color="primary">
+          Prev. Set
+        </button>
+      </div>
+      <div class="buttonBundle">
+        <button
+          *ngIf="!workout.finalExercise"
+          (click)="nextExercise()"
+          mat-flat-button
+          color="primary"
+        >
+          Next Exercise
+        </button>
+        <button
+          *ngIf="workout.finalExercise"
+          (click)="finishWorkout()"
+          mat-flat-button
+          color="primary"
+        >
+          Finish Workout
+        </button>
+        <button (click)="nextSet()" mat-flat-button color="primary">
+          Next Set
+        </button>
+      </div>
+    </div>
+    <div class="lowerBundle">
+      <button (click)="workout.deleteSet()" mat-flat-button color="primary">
+        Delete Set
+      </button>
+      <button (click)="skipExercise()" mat-flat-button color="primary">
+        Skip Exercise
+      </button>
+    </div>
+  </div>
+</div>
+<div class="finishScreen" *ngIf="workoutFinished">
+  <h1>Good Job! You have finished the workout</h1>
+  <div>
+    <button  mat-flat-button color="primary" (click)="returnToWorkout()"><mat-icon>keyboard_return</mat-icon></button>
+    <button  mat-flat-button color="primary" (click)="goToMain()">Go to Main menu</button>
+    <button  mat-flat-button color="primary" (click)="goToProgress()">See progress<mat-icon>bar_chart</mat-icon></button>
+  </div>
 </div>

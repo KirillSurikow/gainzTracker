@@ -1,0 +1,144 @@
+:host {
+  width: 500px;
+
+  .headerLine{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+
+    h1{
+      margin: unset;
+    }
+  }
+
+  .searchBar {
+    width: 100%;
+  }
+
+  .sortByWOorALLContainer {
+    margin-bottom: 4px;
+
+    .sortByWOorALL {
+      width: 100%;
+      display: flex;
+      border: 1px solid rgba(131, 130, 130, 0.6);
+      border-radius: 10px;
+
+      &:hover {
+        cursor: pointer;
+      }
+
+      &:active {
+        cursor: pointer;
+      }
+
+      .left {
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+        width: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 8px;
+      }
+
+      .right {
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        width: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 8px;
+      }
+    }
+  }
+
+  .exerciseList {
+    .exerciseCard {
+      display: flex;
+      flex-direction: column;
+      padding-left: 8px;
+      padding-top: 8px;
+      position: relative;
+
+      mat-checkbox {
+        position: absolute;
+        right: 8px;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+      }
+    }
+  }
+
+  .workoutList {
+    width: 100%;
+
+    mat-card {
+      display: flex;
+      flex-direction: column;
+      .workoutContainer {
+        display: flex;
+        flex-direction: column;
+
+        .title {
+          padding: 4px 0;
+          position: relative;
+          height: 41px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 20px;
+          font-weight: 500;
+
+          mat-checkbox{
+            position: absolute;
+            right: 8px;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+          }
+        }
+
+        .exercises {
+          display: flex;
+          flex-direction: column;
+
+          .exercise {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            border-bottom: 1px solid rgba(206, 202, 202, 0.5);
+            border-top: 1px solid rgba(206, 202, 202, 0.5);
+            border-collapse: collapse;
+            padding: 8px 0 15px 4px;
+            border-radius: 4px;
+
+            .exerciseName{
+              font-size: 20px;
+              padding: 10px 0;
+              padding-left: 6px;
+              font-weight: 500;
+            }
+
+            .categoryDisplay, .musclesDisplay{
+              padding-left: 28px;
+            }
+
+            mat-checkbox{
+              position: absolute;
+              right: 8px;
+              top: 0;
+              bottom: 0;
+              margin: auto;
+            }
+          }
+
+
+        }
+      }
+    }
+  }
+}

@@ -13,6 +13,7 @@ import { ChooseExerciseComponent } from './choose-exercise/choose-exercise.compo
 import { ManageWorkoutsComponent } from './manage-workouts/manage-workouts.component';
 import { SelectAndExecuteWOComponent } from './select-and-execute-wo/select-and-execute-wo.component';
 import { ExecuteWorkoutComponent } from './execute-workout/execute-workout.component';
+import { ProgressComponent } from './progress/progress.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -32,6 +33,7 @@ const routes: Routes = [
       { path: 'workouts', component: ManageWorkoutsComponent},
       { path: 'startWorkout', component: SelectAndExecuteWOComponent},
       { path: 'executeWorkout', component: ExecuteWorkoutComponent},
+      { path: 'progress', component: ProgressComponent},
     ],
   },
 ];
