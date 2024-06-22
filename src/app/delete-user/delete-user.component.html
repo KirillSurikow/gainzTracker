@@ -1,20 +1,20 @@
 <mat-card>
   <mat-card-header>
-    <mat-card-title> Benutzer löschen </mat-card-title>
-    <mat-card-subtitle>Bestätige mit deinem Passwort</mat-card-subtitle>
+    <mat-card-title> Delete user </mat-card-title>
+    <mat-card-subtitle>Confirm with password</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
     <form (ngSubmit)="onSubmit(loginForm)" #loginForm="ngForm">
       <mat-form-field>
-        <mat-label>Passwort</mat-label>
+        <mat-label>password</mat-label>
         <input id="password" required type="password" name="password"  minlength="8" #passwordInput="ngModel" [(ngModel)]="loginPassword" matInput />
       </mat-form-field>
       <mat-error *ngIf="passwordInput.invalid && (passwordInput.touched || passwordInput.dirty)">
-        <span *ngIf="passwordInput.errors?.['minlength']">Mindestens acht Zeichen</span>
-        <span *ngIf="passwordInput.errors?.['required']">Fehlender Wert</span>
+        <span *ngIf="passwordInput.errors?.['minlength']">minimum eight characters</span>
+        <span *ngIf="passwordInput.errors?.['required']">missing input</span>
       </mat-error>
 
-      <button type="submit" [disabled]="loginForm.invalid" mat-raised-button>Bestätigen</button>
+      <button type="submit" [disabled]="loginForm.invalid" mat-raised-button>confirm</button>
       <div *ngIf="errormessage" class="text-danger">{{errormessage}}</div>
     </form>
   </mat-card-content>

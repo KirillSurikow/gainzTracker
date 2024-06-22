@@ -1,18 +1,17 @@
 <mat-card *ngIf="!customize && !library && !manage">
-  <mat-card-title>Erstelle deine Übungen </mat-card-title>
+  <mat-card-title>Find or create Exercises <button class="returnBtn" (click)="goToMain()"><mat-icon>keyboard_return</mat-icon></button> </mat-card-title>
   <mat-card-subtitle
-    >Erkunde die Bibliothek und lass dich inspirieren, oder erstelle dir deine
-    eigenen Übungen</mat-card-subtitle
+    >Explore the libraty or create your own exercises</mat-card-subtitle
   >
 </mat-card>
 <div *ngIf="!customize && !library && !manage" class="options">
-  <mat-card (click)="openCard('library')"> Bibliothek </mat-card>
-  <mat-card (click)="openCard('customize')"> Eigene Übung erstellen </mat-card>
-  <mat-card (click)="openCard('manage')"> Übungen verwalten </mat-card>
+  <mat-card (click)="openCard('library')"> Libreary </mat-card>
+  <mat-card (click)="openCard('customize')"> Create an exercise </mat-card>
+  <mat-card (click)="openCard('manage')"> Manage exercises </mat-card>
 </div>
 <mat-card *ngIf="customize" class="createExerciseCard">
   <mat-card-title
-    >Übung erstellen
+    >Create exercise
     <button *ngIf="!comingFromLibray" (click)="closeCustom()">
       <mat-icon>cancel</mat-icon>
     </button>
@@ -43,17 +42,17 @@
         "
       >
         <span *ngIf="exerciseNameInput.errors?.['pattern']"
-          >Unerlaubte Zeichen</span
+          >forbidden pattern</span
         >
         <span *ngIf="exerciseNameInput.errors?.['minlength']"
-          >Mindestens drei Zeichen</span
+          >minimum of three characters</span
         >
         <span *ngIf="exerciseNameInput.errors?.['required']"
-          >Fehlender Wert</span
+          >input missing</span
         >
       </mat-error>
 
-      <h3>Welche Muskeln sollen beansprucht werden?</h3>
+      <h3>Which muscle group shall be targeted</h3>
 
       <div #musclesContainer class="tMusclesContainer">
         <mat-checkbox
@@ -63,7 +62,7 @@
           [(ngModel)]="targetedMuscles.abdominals"
           value="abdominals"
           id = "abdominals"
-          >Bauchmuskeln</mat-checkbox
+          >abdominals</mat-checkbox
         >
         <mat-checkbox
           (change)="setUpMuscleValidation()"
@@ -71,7 +70,7 @@
           name="abductors"
           [(ngModel)]="targetedMuscles.abductors"
           value="abductors"
-          >Abduktoren</mat-checkbox
+          >abductors</mat-checkbox
         >
         <mat-checkbox
           (change)="setUpMuscleValidation()"
@@ -79,7 +78,7 @@
           name="adductors"
           [(ngModel)]="targetedMuscles.adductors"
           value="adductors"
-          >Adduktoren</mat-checkbox
+          >adductors</mat-checkbox
         >
         <mat-checkbox
           (change)="setUpMuscleValidation()"
@@ -87,7 +86,7 @@
           name="biceps"
           [(ngModel)]="targetedMuscles.biceps"
           value="biceps"
-          >Bizeps</mat-checkbox
+          >biceps</mat-checkbox
         >
         <mat-checkbox
           (change)="setUpMuscleValidation()"
@@ -95,7 +94,7 @@
           name="calves"
           [(ngModel)]="targetedMuscles.calves"
           value="calves"
-          >Wadenmuskeln</mat-checkbox
+          >calves</mat-checkbox
         >
         <mat-checkbox
           (change)="setUpMuscleValidation()"
@@ -103,7 +102,7 @@
           name="chest"
           [(ngModel)]="targetedMuscles.chest"
           value="chest"
-          >Brustmuskeln</mat-checkbox
+          >chest</mat-checkbox
         >
         <mat-checkbox
           (change)="setUpMuscleValidation()"
@@ -111,7 +110,7 @@
           name="forearms"
           [(ngModel)]="targetedMuscles.forearms"
           value="forearms"
-          >Unterarme</mat-checkbox
+          >forearms</mat-checkbox
         >
         <mat-checkbox
           (change)="setUpMuscleValidation()"
@@ -119,7 +118,7 @@
           name="glutes"
           [(ngModel)]="targetedMuscles.glutes"
           value="glutes"
-          >Gesäßmuskeln</mat-checkbox
+          >glutes</mat-checkbox
         >
         <mat-checkbox
           (change)="setUpMuscleValidation()"
@@ -127,7 +126,7 @@
           name="hamstrings"
           [(ngModel)]="targetedMuscles.hamstrings"
           value="hamstrings"
-          >Oberschenkelrückseite</mat-checkbox
+          >hamstrings</mat-checkbox
         >
         <mat-checkbox
           (change)="setUpMuscleValidation()"
@@ -135,7 +134,7 @@
           name="lats"
           [(ngModel)]="targetedMuscles.lats"
           value="lats"
-          >Latissimus
+          >lats
         </mat-checkbox>
         <mat-checkbox
           (change)="setUpMuscleValidation()"
@@ -143,7 +142,7 @@
           name="lower_back"
           [(ngModel)]="targetedMuscles.lower_back"
           value="lower_back"
-          >unterer Rücken</mat-checkbox
+          >lower back</mat-checkbox
         >
         <mat-checkbox
           (change)="setUpMuscleValidation()"
@@ -151,7 +150,7 @@
           name="middle_back"
           [(ngModel)]="targetedMuscles.middle_back"
           value="middle_back"
-          >mittlerer Rücken</mat-checkbox
+          >middle back</mat-checkbox
         >
         <mat-checkbox
           (change)="setUpMuscleValidation()"
@@ -159,7 +158,7 @@
           name="neck"
           [(ngModel)]="targetedMuscles.neck"
           value="neck"
-          >Nackenmuskeln</mat-checkbox
+          >neck</mat-checkbox
         >
         <mat-checkbox
           (change)="setUpMuscleValidation()"
@@ -167,7 +166,7 @@
           name="quadriceps"
           [(ngModel)]="targetedMuscles.quadriceps"
           value="quadriceps"
-          >Quadrizeps
+          >quadriceps
         </mat-checkbox>
         <mat-checkbox
           (change)="setUpMuscleValidation()"
@@ -175,7 +174,7 @@
           name="traps"
           [(ngModel)]="targetedMuscles.traps"
           value="traps"
-          >Trapezmuskel
+          >traps
         </mat-checkbox>
         <mat-checkbox
           (change)="setUpMuscleValidation()"
@@ -183,12 +182,12 @@
           name="triceps"
           [(ngModel)]="targetedMuscles.triceps"
           value="triceps"
-          >Trizeps</mat-checkbox
+          >triceps</mat-checkbox
         >
       </div>
 
       <mat-form-field>
-        <mat-label>Kategorie (optional)</mat-label>
+        <mat-label>category (optional)</mat-label>
         <select
           (change)="checkCategory()"
           matNativeControl
@@ -210,15 +209,15 @@
         "
       >
         <span *ngIf="exerciseCategoryCustomInput.errors?.['pattern']"
-          >Unerlaubte Zeichen</span
+          >forbidden pattern</span
         >
         <span *ngIf="categoryInvalid"
-          >Nur eine von den beiden Kategorie-Feldern befüllen</span
+          >just one category field</span
         >
       </mat-error>
 
       <mat-form-field>
-        <mat-label>Eigene Kategorie erstellen (optional)</mat-label>
+        <mat-label>custom category (optional)</mat-label>
         <input
           (change)="checkCategory()"
           id="exerciseCategoryCustom"
@@ -233,7 +232,7 @@
       </mat-form-field>
 
       <mat-form-field>
-        <mat-label>Beschreibung</mat-label>
+        <mat-label>describtion</mat-label>
         <textarea
           id="exerciseDescribtion"
           type="text"
@@ -251,7 +250,7 @@
         "
       >
         <span *ngIf="exerciseDescribtionInput.errors?.['pattern']"
-          >Unerlaubte Zeichen</span
+          >forbidden pattern</span
         >
       </mat-error>
 
@@ -259,54 +258,54 @@
         name="trackProgress"
         color="primary"
         [(ngModel)]="trackProgress"
-        >Fortschritt messen</mat-slide-toggle
+        >track progress</mat-slide-toggle
       >
       <br />
 
       <div *ngIf="trackProgress">
-        <h3>Wie soll der Fortschritt gemessen werden?</h3>
+        <h3>How to measure progress?</h3>
 
         <mat-checkbox
           color="primary"
           (change)="setUpTrackingValidation()"
           name="weight"
           [(ngModel)]="trackingOptions.weight._value"
-          >Gewicht</mat-checkbox
+          >weight</mat-checkbox
         >
         <mat-checkbox
           color="primary"
           (change)="setUpTrackingValidation()"
           name="repetitions"
           [(ngModel)]="trackingOptions.repetitions._value"
-          >Wiederholungen</mat-checkbox
+          >repetitions</mat-checkbox
         >
         <mat-checkbox
           color="primary"
           (change)="setUpTrackingValidation()"
           name="time_inSmin"
           [(ngModel)]="trackingOptions.time_inSmin._value"
-          >Zeit in Sekunden(min)</mat-checkbox
+          >time in seconds(min)</mat-checkbox
         >
         <mat-checkbox
         color="primary"
         (change)="setUpTrackingValidation()"
         name="time_inSmax"
         [(ngModel)]="trackingOptions.time_inSmax._value"
-        >Zeit in Sekunden(max)</mat-checkbox
+        >time in seconds(max)</mat-checkbox
       >
         <mat-checkbox
           color="primary"
           (change)="setUpTrackingValidation()"
           name="distance"
           [(ngModel)]="trackingOptions.distance._value"
-          >Distanz in Meter</mat-checkbox
+          >distance in m</mat-checkbox
         >
         <mat-checkbox
           color="primary"
           (change)="setUpTrackingValidation()"
           name="height"
           [(ngModel)]="trackingOptions.height._value"
-          >Höhe in Meter</mat-checkbox
+          >height in m</mat-checkbox
         >
       </div>
 
@@ -316,12 +315,12 @@
         name="isBreakBtwSets"
         color="primary"
         [(ngModel)]="isBreakBtwSets"
-        >Satzpause festlegen</mat-slide-toggle
+        >break between sets</mat-slide-toggle
       >
       <br />
       <div class="breakContainer" [ngClass]="{ 'd-none': !isBreakBtwSets }">
         <mat-form-field>
-          <mat-label>Satzpause einstellen in Sekunden</mat-label>
+          <mat-label>break-time</mat-label>
           <input
             min="1"
             [required]="isBreakBtwSets"
@@ -341,14 +340,14 @@
           "
         >
           <span *ngIf="breakTimeInput.errors?.['min']"
-            >Mindestens 1 Sekunde</span
+            >minimum 1 second</span
           >
         </mat-error>
       </div>
 
-      <div *ngIf="success" class="successMessage">Übung erstellt</div>
+      <div *ngIf="success" class="successMessage">exercise created</div>
       <div *ngIf="fail" class="text-danger">
-        Upload fehlgeschlagen. Versuche es später erneut
+        Upload failed, try later
       </div>
       <button
         type="submit"
@@ -368,14 +367,14 @@
 
 <mat-card *ngIf="manage" class="manageExercisesCard">
   <mat-card-title
-    >Übungen verwalten
+    >Manage exercises
     <button (click)="closeManage()">
       <mat-icon>cancel</mat-icon>
     </button></mat-card-title
   >
   <mat-card-content>
     <mat-form-field class="searchBar">
-      <mat-label>Durchsuche deine Übungen</mat-label>
+      <mat-label>Search exercises</mat-label>
       <input matInput [(ngModel)]="searchExpression" />
     </mat-form-field>
 
@@ -452,7 +451,7 @@
 
 <mat-card *ngIf="library" class="findExerciseCard">
   <mat-card-title
-    >Übung finden
+    >Find exercise
     <button (click)="closeLibray()">
       <mat-icon>cancel</mat-icon>
     </button></mat-card-title
@@ -460,7 +459,7 @@
   <mat-card-content>
     <form (ngSubmit)="onRequest()" #requestForm="ngForm">
       <mat-form-field class="searchExerciseName">
-        <mat-label>Name der Übung</mat-label>
+        <mat-label>name</mat-label>
         <input
           id="searchExerciseName"
           type="text"
@@ -505,7 +504,7 @@
         </select>
       </mat-form-field>
 
-      <button type="submit" mat-raised-button>Übungen finden</button>
+      <button type="submit" mat-raised-button>Find exercise</button>
     </form>
   </mat-card-content>
 </mat-card>

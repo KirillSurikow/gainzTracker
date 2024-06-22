@@ -9,21 +9,21 @@
         <input id="email" required type="email" name="email" pattern="[A-Za-z0-9._%\-]+@[A-Za-z0-9._%\-]+\.[a-z]{2,3}"  minlength="3" #emailInput="ngModel" [(ngModel)]="loginEmail" matInput />
       </mat-form-field>
       <mat-error *ngIf="emailInput.invalid && (emailInput.touched || emailInput.dirty)">
-        <span *ngIf="emailInput.errors?.['pattern']">Kein E-Mailformat</span>
-        <span *ngIf="emailInput.errors?.['required']">Fehlender Wert</span>
+        <span *ngIf="emailInput.errors?.['pattern']">not an email format</span>
+        <span *ngIf="emailInput.errors?.['required']">missing input</span>
       </mat-error>
       <mat-form-field>
         <mat-label>Passwort</mat-label>
         <input id="password" required type="password" name="password"  minlength="8" #passwordInput="ngModel" [(ngModel)]="loginPassword" matInput />
       </mat-form-field>
       <mat-error *ngIf="passwordInput.invalid && (passwordInput.touched || passwordInput.dirty)">
-        <span *ngIf="passwordInput.errors?.['minlength']">Mindestens acht Zeichen</span>
-        <span *ngIf="passwordInput.errors?.['required']">Fehlender Wert</span>
+        <span *ngIf="passwordInput.errors?.['minlength']">minimum eight characters</span>
+        <span *ngIf="passwordInput.errors?.['required']">missing input</span>
       </mat-error>
       <button type="submit" [disabled]="loginForm.invalid" mat-raised-button>Login</button>
       <div *ngIf="errormessage" class="text-danger">{{errormessage}}</div>
     </form>
     <a href="signUp"><button mat-raised-button>Sign Up!</button></a>
-    <a href="forgetPassword"><span>Passwort vergessen</span></a>
+    <a href="forgetPassword"><span>Forgot password</span></a>
   </mat-card-content>
 </mat-card>

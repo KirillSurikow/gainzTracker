@@ -48,7 +48,9 @@
       .exerciseList{
         height: calc(100vh - 245px);
         width: 100%;
+        padding: 0 5px;
         overflow-y: auto;
+        overflow-x: clip;
         .exerciseCard {
           z-index: 1;
           margin-bottom: 4px;
@@ -185,7 +187,7 @@
             width: fit-content;
             background-color: transparent;
             border: none;
-  
+
             &:hover{
               cursor: pointer;
               transform: scale(1.1);

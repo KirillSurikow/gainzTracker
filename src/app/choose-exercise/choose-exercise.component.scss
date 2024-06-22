@@ -5,6 +5,20 @@
   gap: 8px;
   mat-card {
     padding: 8px;
+
+    mat-card-title{
+      position: relative;
+      .returnBtn{
+        position: absolute;
+        top: 3px;
+        right: 3px;
+        background-color: transparent;
+        border: none;
+        height: fit-content;
+        width: fit-content;
+        cursor: pointer;
+      }
+    }
   }
 
   .options {

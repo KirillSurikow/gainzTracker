@@ -11,6 +11,7 @@ import { DeleteExerciseComponent } from '../dialogs/deleteExercise/delete-exerci
 import { FetchService } from '../services/fetchService/fetch.service';
 import { KeyValue } from '@angular/common';
 import { TrackingOption } from '../interfaces/tracking-option';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-choose-exercise',
@@ -45,7 +46,10 @@ export class ChooseExerciseComponent {
   searchExerciseCategory: string | undefined;
   searchExerciseMuscles: string | undefined;
   allSearchedExercises: any[] = [];
-  keyvalueComparator = (a: KeyValue<string, TrackingOption>, b: KeyValue<string, TrackingOption>): number => {
+  keyvalueComparator = (
+    a: KeyValue<string, TrackingOption>,
+    b: KeyValue<string, TrackingOption>
+  ): number => {
     return 0;
   };
 
@@ -65,7 +69,8 @@ export class ChooseExerciseComponent {
     private db: DbService,
     private dataService: DataService,
     public dialog: MatDialog,
-    private fetch: FetchService
+    private fetch: FetchService,
+    private router: Router
   ) {
     this.trackingOptions = new TrackingOptions();
     this.targetedMuscles = new TargetedMuscles();
@@ -104,9 +109,9 @@ export class ChooseExerciseComponent {
       this.exerciseCategory,
       this.exerciseCategoryCustom
     );
-    await this.dataService.add_exercise(exercise)
+    await this.dataService.add_exercise(exercise);
     this.success = this.db.uploadSuccessful;
-    this.fail = this.db.uploadFailed; //Errorhandling einbauen
+    this.fail = this.db.uploadFailed;
     if (this.success) {
       this.reset();
     }
@@ -175,7 +180,7 @@ export class ChooseExerciseComponent {
     this.customize = false;
   }
 
-  async openCard(card: string) {
+  openCard(card: string) {
     if (card === 'customize') {
       this.customize = true;
     }
@@ -183,13 +188,17 @@ export class ChooseExerciseComponent {
       this.library = true;
     }
     if (card === 'manage') {
-      this.manage = true;
-      await this.dataService.getAllExercises();
-      this.allExercises = this.dataService.exercises;
-      this.allExercises = this.allExercises.map((exercise) => {
-        return { element: exercise, state: 'inList' };
-      });
+      this.prepareManageExercises();
     }
+  }
+
+  async prepareManageExercises() {
+    this.manage = true;
+    await this.dataService.getAllExercises();
+    this.allExercises = this.dataService.exercises;
+    this.allExercises = this.allExercises.map((exercise) => {
+      return { element: exercise, state: 'inList' };
+    });
   }
 
   toggleCard(card: any, id: number) {
@@ -220,10 +229,14 @@ export class ChooseExerciseComponent {
     });
 
     dialogRef.afterClosed().subscribe((index) => {
-      if (index) {
+      if (index !== undefined) {
+        let target = this.exerciseCard.toArray()[index]['nativeElement'];
         this.allExercises.splice(index, 1);
         this.activateBlurr = false;
         this.isBlurr = false;
+        target.classList.add('normalState');
+        target.classList.remove('centre');
+        document.body.style.overflowY = 'unset';
         document.body.style.overflowY = 'unset';
       }
     });
@@ -280,5 +293,9 @@ export class ChooseExerciseComponent {
     this.exerciseCategory = exercise.type;
     this.targetedMuscles[exercise.muscle as keyof TargetedMuscles] = true;
     this.setUpMuscleValidation();
+  }
+
+  goToMain() {
+    this.router.navigateByUrl('home/dashboard');
   }
 }

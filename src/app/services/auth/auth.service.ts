@@ -17,7 +17,7 @@ import {
   sendEmailVerification,
   reauthenticateWithCredential,
   EmailAuthProvider,
-  deleteUser
+  deleteUser,
 } from 'firebase/auth';
 
 @Injectable({
@@ -119,53 +119,58 @@ export class AuthService {
     }
   }
 
-  changePassword(oldPassword: string, newPassword: string) : Observable <void | undefined> {
+  changePassword(
+    oldPassword: string,
+    newPassword: string
+  ): Observable<void | undefined> {
     if (this.auth.currentUser?.email) {
       const credentials = EmailAuthProvider.credential(
         this.auth.currentUser?.email,
         oldPassword
       );
       if (this.auth.currentUser) {
-       const promise = reauthenticateWithCredential(this.auth.currentUser, credentials).then(
-          () => {
-            if (this.auth.currentUser) {
-              updatePassword(this.auth.currentUser, newPassword)
-              .then(()=>{
-              })
-              .catch((error : any)=>{
-                console.dir(error.code)
-              })
-            }
+        const promise = reauthenticateWithCredential(
+          this.auth.currentUser,
+          credentials
+        ).then(() => {
+          if (this.auth.currentUser) {
+            updatePassword(this.auth.currentUser, newPassword)
+              .then(() => {})
+              .catch((error: any) => {
+                console.dir(error.code);
+              });
           }
-        );
-        return from(promise)
+        });
+        return from(promise);
       }
     }
-    return of (undefined)
+    return of(undefined);
   }
 
-  delete_user(oldPassword: string) : Observable <void | undefined> {
+  delete_user(oldPassword: string): Observable<void | undefined> {
     if (this.auth.currentUser?.email) {
       const credentials = EmailAuthProvider.credential(
         this.auth.currentUser?.email,
         oldPassword
       );
       if (this.auth.currentUser) {
-       const promise = reauthenticateWithCredential(this.auth.currentUser, credentials).then(
-          () => {
-            if (this.auth.currentUser) {
-              deleteUser (this.auth.currentUser)
-              .then(()=>{
+        const promise = reauthenticateWithCredential(
+          this.auth.currentUser,
+          credentials
+        ).then(() => {
+          if (this.auth.currentUser) {
+            deleteUser(this.auth.currentUser)
+              .then(() => {
+                this.db.deleteUser(this.auth.currentUser?.uid);
               })
-              .catch((error : any)=>{
-                console.dir(error.code)
-              })
-            }
+              .catch((error: any) => {
+                console.dir(error.code);
+              });
           }
-        );
-        return from(promise)
+        });
+        return from(promise);
       }
     }
-    return of (undefined)
+    return of(undefined);
   }
 }

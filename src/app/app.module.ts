@@ -41,8 +41,10 @@ import { TimerComponent } from './timer/timer.component';
 import { TimeFormatPipe } from './pipes/time-format';
 import { TimerAndStoppWatchComponent } from './timer-and-stopp-watch/timer-and-stopp-watch.component';
 import { ProgressComponent } from './progress/progress.component';
-import {MatAccordion, MatExpansionModule} from '@angular/material/expansion';
-import { TrainingProgressChartComponent } from './training-progress-chart/training-progress-chart.component';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
+import { ChartComponent } from './chart/chart.component';
+
+
 
 
 @NgModule({
@@ -69,7 +71,7 @@ import { TrainingProgressChartComponent } from './training-progress-chart/traini
     TimeFormatPipe,
     TimerAndStoppWatchComponent,
     ProgressComponent,
-    TrainingProgressChartComponent,
+    ChartComponent,
   ],
   imports: [
     BrowserModule,
@@ -87,8 +89,7 @@ import { TrainingProgressChartComponent } from './training-progress-chart/traini
     MatCheckboxModule,
     MatSlideToggleModule,
     DragDropModule,
-    MatAccordion,
-    MatExpansionModule
+
 
   ],
   providers: [
@@ -96,6 +97,7 @@ import { TrainingProgressChartComponent } from './training-progress-chart/traini
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     DatePipe,
+    provideCharts(withDefaultRegisterables())
   ],
   bootstrap: [AppComponent],
 })

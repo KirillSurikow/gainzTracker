@@ -22,7 +22,7 @@ export class SelectAndExecuteWOComponent {
     public dialog: MatDialog,
     private router: Router
   ) {
-    if (this.dataService.woPlansNotUptoDate) {
+    if (this.dataService.woPlansNotUptoDate && this.dataService.user) {
       this.get_exercises_And_Workouts();
     } else {
       this.allExercises = this.dataService.exercises;
@@ -50,5 +50,9 @@ export class SelectAndExecuteWOComponent {
         this.router.navigateByUrl('home/executeWorkout')
       }
     });
+  }
+
+  goToMain(){
+    this.router.navigateByUrl('home/dashboard')
   }
 }

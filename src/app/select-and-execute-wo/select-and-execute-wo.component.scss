@@ -6,6 +6,18 @@
     text-align: center;
     mat-card-title {
       width: 100%;
+      position: relative;
+
+      button{
+        cursor: pointer;
+        position: absolute;
+        right: 3px;
+        top: 7px;
+        width: fit-content;
+        height: fit-content;
+        border: none;
+        background-color: transparent;
+      }
     }
 
     .returnBtn {

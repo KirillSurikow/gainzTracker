@@ -55,6 +55,7 @@ export class Workout {
   }
 
   navigateOrAddEx() {
+    console.log(this.plan.length, this.currentExerciseNumber)
     if (this.plan.length === this.currentExerciseNumber + 2) {
       this.finalExercise = true;
     }
@@ -110,6 +111,7 @@ export class Workout {
       this.allSets[this.currentExerciseNumber].length;
     this.setMark++;
     this.currentSetNumber++;
+    console.log(this.setMark, this.currentExerciseNumber, this.allSets[this.currentExerciseNumber][this.currentSetNumber], this.currentSetNumber)
   }
 
   navigatePrevExercise() {

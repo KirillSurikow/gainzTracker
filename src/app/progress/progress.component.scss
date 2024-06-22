@@ -6,9 +6,21 @@
     justify-content: space-between;
     align-items: center;
     padding: 8px 0;
+    position: relative;
 
     h1{
       margin: unset;
+    }
+
+    .returnBtn{
+      position: absolute;
+      right: 3px;
+      top: 3px;
+      background-color: transparent;
+      border: none;
+      height: fit-content;
+      width: fit-content;
+      cursor: pointer;
     }
   }
 
@@ -92,6 +104,17 @@
           align-items: center;
           font-size: 20px;
           font-weight: 500;
+
+          button{
+            border: none;
+            background-color: transparent;
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            cursor: pointer;
+          }
 
           mat-checkbox{
             position: absolute;

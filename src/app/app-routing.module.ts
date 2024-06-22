@@ -14,6 +14,7 @@ import { ManageWorkoutsComponent } from './manage-workouts/manage-workouts.compo
 import { SelectAndExecuteWOComponent } from './select-and-execute-wo/select-and-execute-wo.component';
 import { ExecuteWorkoutComponent } from './execute-workout/execute-workout.component';
 import { ProgressComponent } from './progress/progress.component';
+import { ChartComponent } from './chart/chart.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -34,6 +35,7 @@ const routes: Routes = [
       { path: 'startWorkout', component: SelectAndExecuteWOComponent},
       { path: 'executeWorkout', component: ExecuteWorkoutComponent},
       { path: 'progress', component: ProgressComponent},
+      { path: 'chart', component: ChartComponent},
     ],
   },
 ];

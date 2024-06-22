@@ -21,6 +21,7 @@ import { ChangeDetectorService } from '../services/changeDetector/change-detecto
 
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-manage-workouts',
@@ -46,18 +47,15 @@ export class ManageWorkoutsComponent implements OnInit, OnDestroy {
   constructor(
     private dataService: DataService,
     public dialog: MatDialog,
-    private changeDetector: ChangeDetectorService
+    private changeDetector: ChangeDetectorService,
+    private router: Router
   ) {
-    if (this.dataService.woPlansNotUptoDate) {
-      this.get_exercises_And_Workouts();
-    } else {
-      this.allExercises = this.dataService.exercises;
-      this.workoutPlans = this.dataService.workoutPlans;
-    }
+
   }
 
   returnToDashboard() {
     this.checkIsChangeSaved();
+    this.router.navigateByUrl('home/dashboard')
   }
 
   checkIsChangeSaved() {
@@ -68,15 +66,12 @@ export class ManageWorkoutsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // this.routerSubscription = this.router.events
-    //   .pipe(
-    //     filter(
-    //       (event): event is NavigationEnd => event instanceof NavigationEnd
-    //     )
-    //   )
-    //   .subscribe((event: NavigationEnd) => {
-    //     this.onRouteChange();
-    //   });
+    if (this.dataService.woPlansNotUptoDate && this.dataService.user) {
+      this.get_exercises_And_Workouts();
+    } else {
+      this.allExercises = this.dataService.exercises;
+      this.workoutPlans = this.dataService.workoutPlans;
+    }
 
   this.changeDetector.saveEvent.pipe(takeUntil(this.destroy$)).subscribe(
         (save) => {

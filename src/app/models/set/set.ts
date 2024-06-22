@@ -8,7 +8,7 @@ export class Set {
 
   constructor(exercise : Exercise, setNumber : number, date : string | null){
     this.exerciseId = exercise.exerciseId;
-    this.setNumber = setNumber;
+    this.setNumber = setNumber + 1;
     this.date = date? date : null;
     this.results = exercise.trackingOptions.returnValidOptions();
   }

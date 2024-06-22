@@ -2,6 +2,8 @@ import { Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
 import { DataService } from '../services/dataservice/data.service';
 import { Exercise } from '../models/exercise/exercise';
 import { WorkoutPlan } from '../models/workoutPlan/workout-plan';
+import { Router } from '@angular/router';
+
 
 type ProgressRequest = {
   [key: string]: {
@@ -22,11 +24,14 @@ export class ProgressComponent {
   showAllExercises: boolean = true;
   allProgressRequest: ProgressRequest = {};
   mainCheckboxStates: { [key: string]: boolean } = {};
+  expansionStates: { [key: string]: boolean } = {};
   exerciseCheckboxStates: { [key: string]: boolean } = {};
   @ViewChildren('checkboxRef', { read: ElementRef })
   checkboxes!: QueryList<ElementRef>;
+  timeSpanInWeeks : number = 4;
+  showDiagramm : boolean = false;
 
-  constructor(private dataService: DataService) {
+  constructor(private dataService: DataService, private router : Router) {
     if (this.dataService.woPlansNotUptoDate) {
       this.get_exercises_And_Workouts();
     } else {
@@ -123,7 +128,23 @@ export class ProgressComponent {
     }
   }
 
-  initateDiagramm(){
+  toogleWorkout(workout: string) {
+    if (this.expansionStates[workout] !== true) {
+      this.expansionStates[workout] = true;
+    } else {
+      this.expansionStates[workout] = false;
+    }
+  }
 
+  initateDiagramm() {
+    if(Object.keys(this.allProgressRequest).length === 0){
+      return;
+    }
+    this.dataService.initiateRequest(this.allProgressRequest, this.timeSpanInWeeks);
+
+  }
+
+  goToMain(){
+    this.router.navigateByUrl('home/dashboard')
   }
 }

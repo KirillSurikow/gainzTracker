@@ -22,7 +22,6 @@ export class FetchService {
     if (category) {
       path += `type=${category}`;
     }
-    path += `&offset=15`;
     return fetch(`https://api.api-ninjas.com/v1/exercises${path}`, {
       method: 'GET',
       headers: {

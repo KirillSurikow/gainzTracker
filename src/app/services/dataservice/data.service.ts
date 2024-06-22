@@ -7,9 +7,18 @@ import { TargetedMuscles } from '../../models/targetedMuscles/targeted-muscles';
 import { WorkoutPlan } from '../../models/workoutPlan/workout-plan';
 import { Set } from '../../models/set/set';
 import { Marks } from '../../models/marks/marks';
+import { ChartDataService } from '../chartData/chart-data.service';
+
 
 type AllSets = {
   [key: number]: Set[];
+};
+
+type ProgressRequest = {
+  [key: string]: {
+    id: string;
+    name: string;
+  };
 };
 
 @Injectable({
@@ -22,9 +31,11 @@ export class DataService {
   workoutPlans: WorkoutPlan[] = [];
   woPlansNotUptoDate: boolean = true;
   currentWOPlan: number | undefined;
-  progressUpToDate : boolean = false;
+  progressUpToDate: boolean = false;
+  requestedProgress: Array<string> = [];
+  snapshots: Array<any> = [];
 
-  constructor(private db: DbService) {}
+  constructor(private db: DbService, private chart: ChartDataService) {}
 
   async get_All_WoPlans() {
     if (this.workoutPlans.length !== 0) {
@@ -70,18 +81,19 @@ export class DataService {
   }
 
   async getAllExercises() {
+    console.log(this.exercisesUpToDate)
     if (!this.exercisesUpToDate) {
       await this.db.getAllExercises(this.user?.uid).then((result) => {
         if (result) {
           result.forEach((doc) => {
-          let records = doc.data()['records'].map((element : any)=>{
-             let record = new Marks();
-             record.exerciseId = element['exerciseId'];
-             record.setNumber = element['setNumber'];
-             record.bestValues = element['bestValues'];
-             record.lastValues = element['lastValues'];
-             return record;
-          })
+            let records = doc.data()['records'].map((element: any) => {
+              let record = new Marks();
+              record.exerciseId = element['exerciseId'];
+              record.setNumber = element['setNumber'];
+              record.bestValues = element['bestValues'];
+              record.lastValues = element['lastValues'];
+              return record;
+            });
             let trackingOptions = new TrackingOptions(
               doc.data()['trackingOptions']['weight']._value,
               doc.data()['trackingOptions']['repetitions']._value,
@@ -108,6 +120,7 @@ export class DataService {
               doc.data()['targetedMuscles']['traps'],
               doc.data()['targetedMuscles']['triceps']
             );
+
             this.storeUserExercises(
               new Exercise(
                 doc.data()['exerciseName'],
@@ -138,6 +151,7 @@ export class DataService {
   async add_exercise(exercise: Exercise) {
     await this.db.addExercise(this.user?.uid, exercise).then((result) => {
       this.exercisesUpToDate = false;
+      this.woPlansNotUptoDate = true;
       this.db.updateExercise(this.user?.uid, result.id);
       this.db.uploadSuccessful = true;
     });
@@ -157,18 +171,18 @@ export class DataService {
   updateProgress(allSets: AllSets) {
     let allSetsArr: Array<object> = [];
     Object.entries(allSets).forEach((exercise) => {
-      let exerciseArr : Array<object> = []
+      let exerciseArr: Array<object> = [];
       exercise.forEach((sets) => {
         if (typeof sets !== 'string') {
-           exerciseArr = sets.map((set) => {
+          exerciseArr = sets.map((set) => {
             return set.toObject();
           });
         }
       });
 
-      allSetsArr = [...allSetsArr, ... exerciseArr];
-      allSetsArr.forEach(set => {
-        this.db.updateProgress(this.user?.uid, set)
+      allSetsArr = [...allSetsArr, ...exerciseArr];
+      allSetsArr.forEach((set) => {
+        this.db.updateProgress(this.user?.uid, set);
       });
     });
     this.progressUpToDate = false;
@@ -181,5 +195,20 @@ export class DataService {
   async delete_Workout(index: number) {
     this.workoutPlans.splice(index, 1);
     this.upload_changes_woPlans();
+  }
+
+  async initiateRequest(requests: ProgressRequest, timespan: number) {
+    const requestPromises = Object.keys(requests).map(async (id) => {
+      try {
+        const response = await this.db.getProgress(this.user?.uid, id);
+        this.chart.prepareRawData(requests[id].name, response, timespan);
+        this.requestedProgress.push(id);
+      } catch (error) {
+        console.error(`Error fetching progress for id ${id}:`, error);
+      }
+    });
+    await Promise.all(requestPromises).then(() => {
+      this.chart.prepareDataForChart();
+    });
   }
 }

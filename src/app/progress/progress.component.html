@@ -1,8 +1,35 @@
-<div class="headerLine">
+<div  class="headerLine">
   <h1>Progess</h1>
+  <mat-form-field>
+    <mat-label>Timespan</mat-label>
+    <select
+      matNativeControl
+      id="timespan"
+      name="timespan"
+      #timespanInput="ngModel"
+      [(ngModel)]="timeSpanInWeeks"
+    >
+      <option value="1">
+        1 Week
+      </option>
+      <option value="4">
+        4 Weeks
+      </option>
+      <option value="12">
+        3 Months
+      </option>
+      <option value="52">
+        1 Year
+      </option>
+      <option value="104">
+        2 Years
+      </option>
+    </select>
+  </mat-form-field>
   <button (click)="initateDiagramm()" mat-raised-button color="primary">See Diagramm</button>
+  <button class="returnBtn" (click)="goToMain()"><mat-icon>keyboard_return</mat-icon></button>
 </div>
-<div class="sortByWOorALLContainer">
+<div  class="sortByWOorALLContainer">
   <div class="sortByWOorALL" (click)="toggleFilter()">
     <div class="left" [ngClass]="{ grey: !showAllExercises }">Workout</div>
     <div class="right" [ngClass]="{ grey: showAllExercises }">
@@ -51,10 +78,18 @@
   </ng-container>
 </div>
 
-<div class="workoutList" *ngIf="!showAllExercises">
+<div class="workoutList" *ngIf="!showAllExercises ">
   <mat-card>
     <div class="workoutContainer" *ngFor="let workout of workoutPlans">
       <div class="title">
+        <button (click)="toogleWorkout(workout.workoutName)">
+          <mat-icon *ngIf="!expansionStates[workout.workoutName]">
+           keyboard_arrow_down
+          </mat-icon>
+          <mat-icon *ngIf="expansionStates[workout.workoutName]">
+            keyboard_arrow_up
+           </mat-icon>
+        </button>
         {{ workout.workoutName }}
         <mat-checkbox
         color="primary"
@@ -63,7 +98,7 @@
           [(ngModel)]="mainCheckboxStates[workout.workoutName]"
         ></mat-checkbox>
       </div>
-      <div class="exercises">
+      <div class="exercises" [ngStyle]="{'display': expansionStates[workout.workoutName] ? 'block' : 'none'}">
         <div
           class="exercise"
           *ngFor="let exercise of workout.allExercises; let i = index"
@@ -105,3 +140,4 @@
     </div>
   </mat-card>
 </div>
+
