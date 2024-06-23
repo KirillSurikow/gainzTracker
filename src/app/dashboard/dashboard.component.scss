@@ -1,36 +1,42 @@
-:host{
-  padding: 75px 0 0 0 ;
+:host {
+  padding: 75px 0 0 0;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   gap: 8px;
 
-  div{
+  div {
     display: flex;
     flex-direction: column;
     gap: 8px;
 
-    mat-card{
+    mat-card {
       width: 150px;
-      height : 150px;
-      display : flex;
+      height: 150px;
+      display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
       cursor: pointer;
 
-      &:hover{
+      &:hover {
         background-color: rgba(141, 236, 141, 0.5);
-        transform: translateY(-4px)
+        transform: translateY(-4px);
       }
 
-      &:active{
+      &:active {
         background-color: rgba(141, 236, 141, 0.5);
-        transform: translateY(-4px)
+        transform: translateY(-4px);
       }
     }
-  };
+  }
 
+  @media (max-width: 500px) {
+    mat-card {
+      width: 125px !important;
+      height: 125px !important;
+    }
+  }
 }

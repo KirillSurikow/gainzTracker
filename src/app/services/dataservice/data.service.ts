@@ -81,7 +81,6 @@ export class DataService {
   }
 
   async getAllExercises() {
-    console.log(this.exercisesUpToDate)
     if (!this.exercisesUpToDate) {
       await this.db.getAllExercises(this.user?.uid).then((result) => {
         if (result) {

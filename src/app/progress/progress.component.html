@@ -45,7 +45,7 @@
 <div class="exerciseList" *ngIf="showAllExercises">
   <ng-container *ngFor="let exercise of allExercises; let i = index">
     <ng-container *ngIf="includesSearch(exercise)">
-      <mat-card class="exerciseCard" cdkDrag>
+      <mat-card class="exerciseCard">
         <mat-card-title>{{ exercise.exerciseName }}</mat-card-title>
         <mat-card-content>
           <ng-container *ngIf="exercise.exerciseCategory !== ''">

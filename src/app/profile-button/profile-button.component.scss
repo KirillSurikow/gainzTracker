@@ -1,12 +1,18 @@
-:host{
+:host {
   position: absolute;
   top: 26px;
   right: 54px;
 
-  mat-icon{
+  mat-icon {
     width: 42px;
     height: 42px;
     font-size: 40px;
     cursor: pointer;
+  }
+}
+
+@media (max-width: 800px) {
+  :host {
+    top: 17px;
   }
 }

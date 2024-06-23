@@ -81,6 +81,13 @@
       font-size: 22px;
     }
   }
+
+  @media (max-width: 600px) {
+    mat-card{
+      width: 320px;
+      height: 100px;
+    }
+  }
 }
 
 .hidden{
@@ -93,3 +100,5 @@
 .d-none{
   display: none;
 }
+
+

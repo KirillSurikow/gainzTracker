@@ -25,13 +25,13 @@ import { Router } from '@angular/router';
 
 
 export class ExecuteWorkoutComponent implements AfterViewInit, OnDestroy {
-  workout: Workout;
+  workout: Workout | undefined;
   showStartscreen: boolean = true;
   showWorkoutMask: boolean = false;
   showTimer: boolean = false;
   invalidInputs: boolean = false;
   startTimer: boolean = false;
-  startTimerSubscribtion: Subscription;
+  startTimerSubscribtion: Subscription | undefined;
   isStopwatch: boolean = false;
   recognition: any;
   isListening: boolean = false;
@@ -53,11 +53,20 @@ export class ExecuteWorkoutComponent implements AfterViewInit, OnDestroy {
     private timer: TimerService,
     private route : Router
   ) {
+    this.initiateWorkout();
+    this.initateTimerSub()
+    this.initialeSpeechRecognition();
+  }
+
+  initiateWorkout(){
     this.workout = new Workout(
       this.dataService.workoutPlans[this.dataService.currentWOPlan!],
       this.timer,
       this.dataService
     );
+  }
+
+  initateTimerSub(){
     this.startTimerSubscribtion = this.timer.startTimerEvent.subscribe(
       (signal: boolean) => {
         if (signal) {
@@ -65,7 +74,9 @@ export class ExecuteWorkoutComponent implements AfterViewInit, OnDestroy {
         }
       }
     );
+  }
 
+  initialeSpeechRecognition(){
     const { webkitSpeechRecognition }: any = window as any;
     this.recognition = new webkitSpeechRecognition();
     this.recognition.continuous = true;
@@ -75,13 +86,15 @@ export class ExecuteWorkoutComponent implements AfterViewInit, OnDestroy {
     this.recognition.onresult = (event: any) => {
       for (let i = event.resultIndex; i < event.results.length; ++i) {
         const transcript = event.results[i][0].transcript;
-        this.workout.allSets[this.workout.currentExerciseNumber][
-          this.workout.currentSetNumber
+        this.workout!.allSets[this.workout!.currentExerciseNumber][
+          this.workout!.currentSetNumber
         ].results[this.currentSpeechTarget!]._value =
           this.processTranscript(transcript);
       }
     };
   }
+
+
 
   startListening(target: any) {
     if (this.isListening) return;
@@ -118,27 +131,23 @@ export class ExecuteWorkoutComponent implements AfterViewInit, OnDestroy {
   startWorkout() {
     this.showStartscreen = false;
     this.showWorkoutMask = true;
-    this.workout.goToNextExercise();
+    this.workout!.goToNextExercise();
   }
 
-  onTimerStart() {}
-
-  onTimerStop() {}
-
   onTimerEnd() {
-    this.workout.showTimer = false;
-    this.workout.addSet();
+    this.workout!.showTimer = false;
+    this.workout!.addSet();
   }
 
   onTimerReset() {
-    this.workout.showTimer = false;
-    this.workout.addSet();
+    this.workout!.showTimer = false;
+    this.workout!.addSet();
   }
 
   nextSet() {
     this.invalidInputs = false;
     if (this.checkValidity()) {
-      this.workout.navigateOrAddSet();
+      this.workout!.navigateOrAddSet();
     } else {
       this.invalidInputs = true;
       return;
@@ -148,7 +157,7 @@ export class ExecuteWorkoutComponent implements AfterViewInit, OnDestroy {
   nextExercise() {
     this.invalidInputs = false;
     if (this.checkValidity()) {
-      this.workout.navigateOrAddEx();
+      this.workout!.navigateOrAddEx();
     } else {
       this.invalidInputs = true;
       return;
@@ -156,11 +165,11 @@ export class ExecuteWorkoutComponent implements AfterViewInit, OnDestroy {
   }
 
   prevExercise() {
-    this.workout.navigatePrevExercise();
+    this.workout!.navigatePrevExercise();
   }
 
   prevSet() {
-    this.workout.navigatePrevSet();
+    this.workout!.navigatePrevSet();
   }
 
   checkValidity() {
@@ -175,7 +184,7 @@ export class ExecuteWorkoutComponent implements AfterViewInit, OnDestroy {
 
   skipExercise() {
     this.invalidInputs = false;
-    this.workout.navigateOrAddEx();
+    this.workout!.navigateOrAddEx();
   }
 
   toggleTimerOrStoppwatch() {
@@ -183,7 +192,7 @@ export class ExecuteWorkoutComponent implements AfterViewInit, OnDestroy {
   }
 
   finishWorkout(){
-    this.workout.finishWorkout();
+    this.workout!.finishWorkout();
     this.workoutFinished = true;
   }
 

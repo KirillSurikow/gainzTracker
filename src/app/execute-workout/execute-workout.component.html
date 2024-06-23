@@ -1,8 +1,8 @@
 <h1 *ngIf="!workoutFinished">
-  {{ workout.woName }}
+  {{ workout?.woName }}
   <span *ngIf="showWorkoutMask && !workoutFinished"
-    >- Exercise {{ workout.currentExerciseNumber + 1 }}/{{
-      workout.plan.length
+    >- Exercise {{ workout!.currentExerciseNumber + 1 }}/{{
+      workout!.plan.length
     }}</span
   >
 </h1>
@@ -13,11 +13,11 @@
 </div>
 <div class="workoutMask" *ngIf="showWorkoutMask && !workoutFinished">
   <h2>
-    {{ workout.plan[workout.currentExerciseNumber].exerciseName }} - Set
-    {{ workout.currentSetNumber + 1 }} /
-    {{ workout.totalSetsOfCurrentExercise }}
+    {{ workout!.plan[workout!.currentExerciseNumber].exerciseName }} - Set
+    {{ workout!.currentSetNumber + 1 }} /
+    {{ workout!.totalSetsOfCurrentExercise }}
   </h2>
-  <div class="timerOrWatch" *ngIf="workout.provideTimerOrStoppwatch">
+  <div class="timerOrWatch" *ngIf="workout!.provideTimerOrStoppwatch">
     <div class="timerStopwatchToggle" (click)="toggleTimerOrStoppwatch()">
       <div class="left" [ngClass]="{ grey: !isStopwatch }">
         <mat-icon>hourglass_top</mat-icon>
@@ -28,25 +28,25 @@
     </div>
 
     <app-timer-and-stopp-watch
-      *ngIf="!isStopwatch && !workout.showTimer"
+      *ngIf="!isStopwatch && !workout!.showTimer"
       [initialTime]="60"
       [isStopwatch]="isStopwatch"
     ></app-timer-and-stopp-watch>
 
     <app-timer-and-stopp-watch
-      *ngIf="isStopwatch && !workout.showTimer"
+      *ngIf="isStopwatch && !workout!.showTimer"
       [initialTime]="0"
       [isStopwatch]="isStopwatch"
     ></app-timer-and-stopp-watch>
   </div>
   <div class="results">
     <ng-container
-      *ngIf="workout.plan[workout.currentExerciseNumber].trackProgress"
+      *ngIf="workout!.plan[workout!.currentExerciseNumber].trackProgress"
     >
       <ng-container
         *ngFor="
-          let trackingOption of workout.allSets[workout.currentExerciseNumber][
-            workout.currentSetNumber
+          let trackingOption of workout!.allSets[workout!.currentExerciseNumber][
+            workout!.currentSetNumber
           ].results | keyvalue : keyvalueComparator
         "
       >
@@ -58,23 +58,23 @@
             <div class="history">
               <ng-container
                 *ngIf="
-                  workout.plan[workout.currentExerciseNumber].records.length !==
+                  workout!.plan[workout!.currentExerciseNumber].records.length !==
                   0
                 "
               >
                 <button
                   *ngIf="
-                    workout.plan[workout.currentExerciseNumber].records[
-                      workout.currentSetNumber
+                    workout!.plan[workout!.currentExerciseNumber].records[
+                      workout!.currentSetNumber
                     ] &&
-                    workout.plan[workout.currentExerciseNumber].records[
-                      workout.currentSetNumber
+                    workout!.plan[workout!.currentExerciseNumber].records[
+                      workout!.currentSetNumber
                     ].bestValues[trackingOption.key]
                   "
                   (click)="
-                    workout.adopt(
-                      workout.plan[workout.currentExerciseNumber].records[
-                        workout.currentSetNumber
+                    workout!.adopt(
+                      workout!.plan[workout!.currentExerciseNumber].records[
+                        workout!.currentSetNumber
                       ].bestValues[trackingOption.key]._value,
                       trackingOption.key
                     )
@@ -83,8 +83,8 @@
                 >
                   <mat-icon>emoji_events</mat-icon
                   >{{
-                    workout.plan[workout.currentExerciseNumber].records[
-                      workout.currentSetNumber
+                    workout!.plan[workout!.currentExerciseNumber].records[
+                      workout!.currentSetNumber
                     ].bestValues[trackingOption.key]._value
                   }}
                 </button>
@@ -92,17 +92,17 @@
               <ng-container>
                 <button
                 *ngIf="
-                workout.plan[workout.currentExerciseNumber].records[
-                  workout.currentSetNumber
+                workout!.plan[workout!.currentExerciseNumber].records[
+                  workout!.currentSetNumber
                 ] &&
-                workout.plan[workout.currentExerciseNumber].records[
-                  workout.currentSetNumber
+                workout!.plan[workout!.currentExerciseNumber].records[
+                  workout!.currentSetNumber
                 ].lastValues[trackingOption.key]
               "
                 (click)="
-                  workout.adopt(
-                    workout.plan[workout.currentExerciseNumber].records[
-                      workout.currentSetNumber
+                  workout!.adopt(
+                    workout!.plan[workout!.currentExerciseNumber].records[
+                      workout!.currentSetNumber
                     ].lastValues[trackingOption.key]._value,
                     trackingOption.key
                   )
@@ -111,8 +111,8 @@
               >
                 <mat-icon>skip_previous</mat-icon
                 >{{
-                  workout.plan[workout.currentExerciseNumber].records[
-                    workout.currentSetNumber
+                  workout!.plan[workout!.currentExerciseNumber].records[
+                    workout!.currentSetNumber
                   ].lastValues[trackingOption.key]._value
                 }}
               </button>
@@ -143,11 +143,9 @@
   </div>
 
   <app-timer
-    *ngIf="workout.showTimer"
+    *ngIf="workout!.showTimer"
     [start]="startTimer"
-    [startTime]="workout.plan[workout.currentExerciseNumber].breakTime"
-    (timerStart)="onTimerStart()"
-    (timerStop)="onTimerStop()"
+    [startTime]="workout!.plan[workout!.currentExerciseNumber].breakTime"
     (timerEnd)="onTimerEnd()"
     (timerReset)="onTimerReset()"
   >
@@ -164,7 +162,7 @@
       </div>
       <div class="buttonBundle">
         <button
-          *ngIf="!workout.finalExercise"
+          *ngIf="!workout!.finalExercise"
           (click)="nextExercise()"
           mat-flat-button
           color="primary"
@@ -172,7 +170,7 @@
           Next Exercise
         </button>
         <button
-          *ngIf="workout.finalExercise"
+          *ngIf="workout!.finalExercise"
           (click)="finishWorkout()"
           mat-flat-button
           color="primary"
@@ -185,7 +183,7 @@
       </div>
     </div>
     <div class="lowerBundle">
-      <button (click)="workout.deleteSet()" mat-flat-button color="primary">
+      <button (click)="workout!.deleteSet()" mat-flat-button color="primary">
         Delete Set
       </button>
       <button (click)="skipExercise()" mat-flat-button color="primary">

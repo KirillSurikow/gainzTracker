@@ -19,3 +19,19 @@
     cursor: pointer;
   }
 }
+
+@media (max-width: 800px) {
+  :host{
+    height: 75px;
+
+    img{
+      height: 50px;
+      width: 50px;
+    }
+
+    h1{
+      font-size: 20px;
+      margin-bottom: 5px;
+    }
+  }
+}

@@ -88,12 +88,6 @@ export class ManageWorkoutsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // if (this.routerSubscription) {
-    //   this.routerSubscription.unsubscribe();
-    // }
-    // if(this.changeSubscription){
-    //   this.changeDetector.saveEvent.unsubscribe();
-    // }
     this.destroy$.next();
     this.destroy$.complete();
   }

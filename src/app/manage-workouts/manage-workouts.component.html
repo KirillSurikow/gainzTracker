@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card class="headline">
   <mat-card-title> My Workouts </mat-card-title>
   <button class="returnBtn" (click)="returnToDashboard()">
     <mat-icon>keyboard_return</mat-icon>
@@ -11,10 +11,11 @@
     id="exerciseList"
     [cdkDropListData]="allExercises"
   >
-    <mat-form-field class="searchBar">
-      <mat-label>Search</mat-label>
-      <input matInput [(ngModel)]="searchExpression" />
-    </mat-form-field>
+    <input
+      placeholder="Search"
+      class="searchBar"
+      [(ngModel)]="searchExpression"
+    />
 
     <div class="exerciseList">
       <ng-container *ngFor="let exercise of allExercises; let i = index">
@@ -51,10 +52,11 @@
     class="workoutZone"
     [ngClass]="{ noWorkouts: workoutPlans.length == 0 }"
   >
-    <div *ngIf="workoutPlans.length !== 0" class="headWZ">
-      <mat-form-field>
-        <mat-label>Choose a Workout</mat-label>
+    <div class="headWZ" *ngIf="workoutPlans.length !== 0">
+
         <select
+        class="workoutSelect"
+        placeholder="choose a workout"
           matNativeControl
           id="workoutPlans"
           name="workoutPlans"
@@ -69,7 +71,7 @@
             {{ workoutPlan.workoutName }}
           </option>
         </select>
-      </mat-form-field>
+
       <div class="navBox">
         <button (click)="saveChanges()"><mat-icon>save</mat-icon></button>
         <button (click)="openDeleteDialog()">

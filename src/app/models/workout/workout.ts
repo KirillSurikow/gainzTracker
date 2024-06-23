@@ -36,6 +36,7 @@ export class Workout {
     this.datePipe = new DatePipe('en-us');
     this.date = this.datePipe.transform(new Date(), 'dd.MM.yyyy');
     this.allSets = {};
+    this.checkIsFinalExercise();
     this.timer.applyTimeEvent.subscribe((time: number) => {
       if (
         Object.keys(
@@ -55,20 +56,31 @@ export class Workout {
   }
 
   navigateOrAddEx() {
-    console.log(this.plan.length, this.currentExerciseNumber)
+    this.checkIsFinalExercise();
+    if (this.exerciseMark === this.currentExerciseNumber) {
+      this.startNextExercise();
+    } else {
+      this.moveToNextExercise();
+    }
+  }
+
+  moveToNextExercise() {
+    this.currentExerciseNumber++;
+    this.currentSetNumber = 0;
+    this.totalSetsOfCurrentExercise =
+      this.allSets[this.currentExerciseNumber].length;
+    this.isTimerOrWatchNeeded();
+  }
+
+  startNextExercise() {
+    this.currentSetNumber = -1;
+    this.setMark = -1;
+    this.goToNextExercise();
+  }
+
+  checkIsFinalExercise() {
     if (this.plan.length === this.currentExerciseNumber + 2) {
       this.finalExercise = true;
-    }
-    if (this.exerciseMark === this.currentExerciseNumber) {
-      this.currentSetNumber = -1;
-      this.setMark = -1;
-      this.goToNextExercise();
-    } else {
-      this.currentExerciseNumber++;
-      this.currentSetNumber = 0;
-      this.totalSetsOfCurrentExercise =
-        this.allSets[this.currentExerciseNumber].length;
-      this.isTimerOrWatchNeeded();
     }
   }
 
@@ -78,17 +90,20 @@ export class Workout {
       this.allSets[this.currentExerciseNumber].length ===
         this.currentSetNumber + 1
     ) {
-      this.showTimer = true;
-      this.timer.startTimerEvent.emit(true);
+      this.startNewSet();
     } else if (
       this.currentSetNumber + 1 === this.totalSetsOfCurrentExercise &&
       this.exerciseMark !== this.currentExerciseNumber
     ) {
-      this.showTimer = true;
-      this.timer.startTimerEvent.emit(true);
+      this.startNewSet();
     } else {
       this.currentSetNumber++;
     }
+  }
+
+  startNewSet() {
+    this.showTimer = true;
+    this.timer.startTimerEvent.emit(true);
   }
 
   goToNextExercise() {
@@ -111,7 +126,6 @@ export class Workout {
       this.allSets[this.currentExerciseNumber].length;
     this.setMark++;
     this.currentSetNumber++;
-    console.log(this.setMark, this.currentExerciseNumber, this.allSets[this.currentExerciseNumber][this.currentSetNumber], this.currentSetNumber)
   }
 
   navigatePrevExercise() {

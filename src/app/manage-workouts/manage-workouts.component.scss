@@ -1,6 +1,6 @@
 :host {
   width: 500px;
-  mat-card {
+  .headline {
     position: relative;
     width: 100%;
     text-align: center;
@@ -8,7 +8,7 @@
       width: 100%;
     }
 
-    .returnBtn{
+    .returnBtn {
       width: fit-content;
       height: fit-content;
       background-color: transparent;
@@ -17,12 +17,12 @@
       top: 3px;
       right: 3px;
 
-      &:hover{
+      &:hover {
         cursor: pointer;
         transform: scale(1.1);
       }
 
-      &:active{
+      &:active {
         cursor: pointer;
         transform: scale(1.1);
       }
@@ -31,26 +31,40 @@
 
   .zoneWrapper {
     margin-top: 8px;
-    width: 500px;
+    width: 100%;
+    gap: 4px;
     display: flex;
     justify-content: space-between;
-
 
     .exerciseZone {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      width: 230px;
+      flex: 1;
       gap: 8px;
       font-size: 16px;
+      padding-top: 30px;
 
-      .exerciseList{
+      .searchBar {
+        width: 100%;
+        height: 45px;
+        border-radius: 12px;
+        border: none;
+        border-bottom: 1px solid black;
+        text-align: end;
+        outline: none;
+        padding-right: 12px;
+        font-size: 20px;
+      }
+
+      .exerciseList {
         height: calc(100vh - 245px);
         width: 100%;
         padding: 0 5px;
         overflow-y: auto;
         overflow-x: clip;
+
         .exerciseCard {
           z-index: 1;
           margin-bottom: 4px;
@@ -79,12 +93,12 @@
               justify-content: center;
             }
 
-            .musclesDisplay{
-              color:rgb(226, 71, 71);
+            .musclesDisplay {
+              color: rgb(226, 71, 71);
             }
 
-            .musclesDisplay{
-              div{
+            .musclesDisplay {
+              div {
                 display: flex;
                 flex-direction: row;
                 gap: 2px;
@@ -95,12 +109,21 @@
       }
     }
 
-    .workoutZone {
-      width: 230px;
-      padding: 4px;
-      height : fit-content;
-      min-height: calc(100vh - 161px);
+    @media (max-width: 800px){
+      .exerciseZone{
+        padding-top: 4px;
 
+        .exerciseList{
+          padding-top: 17px;
+        }
+      }
+    }
+
+    .workoutZone {
+      flex: 1;
+      padding: 4px;
+      height: fit-content;
+      min-height: calc(100vh - 161px);
 
       mat-card-subtitle {
         font-size: 20px;
@@ -130,76 +153,100 @@
           margin-right: auto;
         }
 
-          .exerciseInWO{
-            height: 100px;
-            position: relative;
-            margin-bottom: 4px;
-            width: 98%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        .exerciseInWO {
+          height: 100px;
+          position: relative;
+          margin-bottom: 4px;
+          width: 98%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
 
-            button{
-              position: absolute;
-              top: 3px;
-              right: 3px;
-              display: none;
-              background-color: transparent;
-              height: fit-content;
-              width: fit-content;
-              border: none;
-            }
+          button {
+            position: absolute;
+            top: 3px;
+            right: 3px;
+            display: none;
+            background-color: transparent;
+            height: fit-content;
+            width: fit-content;
+            border: none;
+          }
 
-            &:hover{
-              cursor: pointer;
-              transform: translateY(-3px);
-              background-color: rgba(141, 236, 141, 0.5);
+          &:hover {
+            cursor: pointer;
+            transform: translateY(-3px);
+            background-color: rgba(141, 236, 141, 0.5);
 
-              button{
-                display: flex;
+            button {
+              display: flex;
 
-                &:hover{
-                  cursor: pointer;
-                  transform: translate(1.1);
-                }
-                &:active{
-                  cursor: pointer;
-                  transform: translate(1.1);
-                }
+              &:hover {
+                cursor: pointer;
+                transform: translate(1.1);
+              }
+              &:active {
+                cursor: pointer;
+                transform: translate(1.1);
               }
             }
           }
-
-
+        }
       }
 
-      .headWZ{
+      .headWZ {
         display: flex;
         gap: 4px;
         align-items: center;
+        width: 100%;
 
-        .navBox{
+        .workoutSelect {
+          width: 100%;
+          height: 57px;
+          border-radius: 12px;
+          border: none;
+          border-bottom: 1px solid black;
+          text-align: end;
+          outline: none;
+          padding-right: 12px;
+          font-size: 20px;
+        }
+
+        .navBox {
           display: flex;
           flex-direction: column;
           justify-content: center;
-          button{
+          button {
             height: fit-content;
             width: fit-content;
             background-color: transparent;
             border: none;
 
-            &:hover{
+            &:hover {
               cursor: pointer;
               transform: scale(1.1);
             }
-            &:active{
+            &:active {
               transform: scale(1.1);
             }
           }
         }
       }
 
-      .workoutList{
+      @media (max-width: 800px) {
+        .headWZ {
+          display: flex;
+          flex-direction: column;
+
+          .navBox {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+          }
+        }
+      }
+
+      .workoutList {
         min-height: calc(100vh - 248px);
       }
     }
@@ -223,5 +270,11 @@
         }
       }
     }
+  }
+}
+
+@media (max-width: 650px) {
+  :host {
+    width: 100%;
   }
 }
